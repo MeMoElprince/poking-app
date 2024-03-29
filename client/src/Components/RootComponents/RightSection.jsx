@@ -23,7 +23,7 @@ export default function RightSection({ className = "" }) {
             Use WhosApp on your browser and phone at the same time.
           </p>
         </div>
-        <div className='text-gray mb-10 flex items-center gap-2'>
+        <div className='text-gray mb-10 flex text-center items-center gap-2'>
           <CiLock/> End-to-end encrypted
         </div>
       </motion.section>

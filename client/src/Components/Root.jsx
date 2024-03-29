@@ -43,7 +43,7 @@ export default function Root() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => { setRightSectionActive(prev => !prev) }}
-              className="flex justify-center items-center text-gray w-[50px] mainHover h-full">
+              className="flex justify-center items-center text-gray w-[80px] mainHover h-full">
               <FaArrowLeft />
             </motion.div>
           }
@@ -59,7 +59,7 @@ export default function Root() {
           <>
             {window.innerWidth >= 768 &&
               <>
-                <LeftSection className="w-[30%] bg-background2" />
+                <LeftSection className="w-[380px] bg-background2" />
                 <RightSection className="flex-grow bg-background2" />
               </>
             }

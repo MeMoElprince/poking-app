@@ -10,7 +10,7 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
     setTurn(num);
   }
   return (
-    <aside className={`flex pr-2 pt-2 flex-col justify-between items-center select-none ${className}`}>
+    <aside className={`flex flex-col justify-between items-center select-none ${className}`}>
       <div className="w-full">
         <div onClick={()=>{changeTurn(1)}} 
         className={`${Turn===1 ? 'bg-background2' : null} ${mainStyle}`}>

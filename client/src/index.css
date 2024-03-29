@@ -5,3 +5,55 @@
 .mainHover{
   @apply hover:bg-background2;
 }
+.mytruncate{
+  width: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 280px) {
+  .t.mytruncate10 {
+      width: 10px;
+  }
+}
+@media (min-width: 320px) {
+  .mytruncate {
+      width: 50px;
+  }
+}
+@media (min-width: 360px) {
+  .mytruncate {
+      width: 100px;
+  }
+}
+@media (min-width: 420px) {
+  .mytruncate {
+      width: 150px;
+  }
+}
+@media (min-width: 500px) {
+  .mytruncate {
+      width: 200px;
+  }
+}
+@media (min-width: 600px) {
+  .mytruncate {
+      width: 250px;
+  }
+}
+@media (min-width: 700px) {
+  .mytruncate {
+      width: 400px;
+  }
+}
+@media (min-width: 767px) {
+  .mytruncate {
+      width: 100px;
+  }
+}
+@media (min-width: 900px) {
+  .mytruncate {
+      width: 150px;
+  }
+}
