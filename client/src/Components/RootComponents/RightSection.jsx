@@ -1,13 +1,18 @@
+import { useState, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
 import { CiLock } from "react-icons/ci";
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FreindsCtx } from '../../Store/FreindsContext';
+import { FriendsCtx } from '../../Store/FriendsContext';
 import { FaDeleteLeft } from "react-icons/fa6";
+import { VscSend } from "react-icons/vsc";
+
 import Chat from './Chat';
 
 export default function RightSection({ className = "" }) {
-  const { FreindsWith, setFreindsWith } = useContext(FreindsCtx);
+  const { FriendsWith, setFriendsWith } = useContext(FriendsCtx);
+  const [showSendBtn, setShowSendBtn] = useState(false);
+  const [message, setMessage] = useState('');
 
   const Empty = () => {
     return (
@@ -30,41 +35,63 @@ export default function RightSection({ className = "" }) {
           </p>
         </div>
         <div className='text-gray mb-10 flex text-center items-center gap-2'>
-          <CiLock/> End-to-end encrypted
+          <CiLock /> End-to-end encrypted
         </div>
       </motion.section>
     )
   }
 
-  const handleRemoveFreind = () => {
+  const handleRemoveFriend = () => {
     const res = window.confirm('Are you sure you want to remove this friend?');
     if (res) {
-      setFreindsWith(null);
+      setFriendsWith(null);
     }
   }
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (e.target[0].value === '') return;
+    console.log(e.target[0].value);
+  }
+
+  const handleInputChanges = (e) => {
+    setShowSendBtn(e.target.value.length > 0 ? true : false);
+    setMessage(e.target.value);
+  }
+
+  // Reset the message input and hide the send button when the user changes the friend
+  useEffect(()=>{
+    setShowSendBtn(false);
+    setMessage('');
+  },[FriendsWith])
   return (
     <div className={`${className}`}>
-      {!FreindsWith && <Empty />}
-      {FreindsWith && 
+      {!FriendsWith && <Empty />}
+      {FriendsWith &&
         <div className='flex flex-col h-full bg-background2'>
           <div className='flex justify-between items-center p-4 bg-background2'>
             <div className='flex items-center gap-4'>
-              <img className='w-10 h-10 rounded-full' src={FreindsWith.Img} alt="" />
+              <img className='w-10 h-10 rounded-full' src={FriendsWith.Img} alt="" />
               <div className='flex flex-col'>
-                <h1 className='text-lg font-bold'>{FreindsWith.Title}</h1>
+                <h1 className='text-lg font-bold'>{FriendsWith.Title}</h1>
               </div>
             </div>
             <div>
-              <FaDeleteLeft onClick={handleRemoveFreind} className='text-gray cursor-pointer' title='remove freind' size={30}/>
+              <FaDeleteLeft onClick={handleRemoveFriend} className='text-gray cursor-pointer' title='remove Friend' size={30} />
             </div>
           </div>
           <div className='flex-grow bg-background2 mainBg overflow-hidden'>
             <Chat />
           </div>
-          <div className=''>
-            <input className='w-full h-full bg-transparent outline-none border-0 p-4' 
-             type="text"  placeholder='Type a message' />
-          </div>
+          <form onSubmit={handleSendMessage} className='flex items-center'>
+            <input onChange={handleInputChanges} value={message} className='w-full h-full bg-transparent outline-none border-0 p-4'
+              type="text" placeholder='Type a message' />
+            {showSendBtn &&
+              <button type='submit' className='pr-3'>
+                <VscSend size={20} />
+              </button>
+            }
+          </form>
         </div>
       }
     </div>
