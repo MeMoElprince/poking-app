@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+const authRouter = require('./routes/authRouter');
+const globalErrorHandler = require('./controllers/globalErrorHandler');
+
 const app = express();
 
 
@@ -22,10 +25,21 @@ const limiter = rateLimit({
         return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
     }    
 });
-app.use(limiter);
 
+app.use(limiter);
 app.use(express.json());
 
 
+app.use('/api/v1/auth', authRouter);
+
+
+app.all('*', (req, res, next) => {
+    res.status(404).json({
+        status: 'fail',
+        message: `Can't find ${req.originalUrl} on this server`
+    });
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;
