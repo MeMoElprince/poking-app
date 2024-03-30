@@ -18,6 +18,13 @@
   background-color: #555;
 }
 
+.imgPlaceholder{
+  background-image: url(../Person.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .mainHover{
   @apply hover:bg-background2;
 }

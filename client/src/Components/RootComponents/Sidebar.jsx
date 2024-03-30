@@ -36,7 +36,7 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         <div 
         // onClick={()=>{changeTurn(5)}} 
         className={`${Turn===5 ? 'bg-background2' : null} ${mainStyle}`}>
-          <div className="w-12 h-12 overflow-hidden rounded-full bg-background2">
+          <div className="w-12 h-12 overflow-hidden rounded-full bg-background2 imgPlaceholder">
             <img className="w-full h-full" src="https://picsum.photos/200/300" alt="" />
           </div>
         </div>
