@@ -1,7 +1,13 @@
 import Logo from '../../assets/logo.png';
 import { CiLock } from "react-icons/ci";
 import {motion} from 'framer-motion';
+import { useContext } from 'react';
+import { FreindsCtx } from '../../Store/FreindsContext';
+import { FaDeleteLeft } from "react-icons/fa6";
+import Chat from './Chat';
+
 export default function RightSection({ className = "" }) {
+  const { FreindsWith, setFreindsWith } = useContext(FreindsCtx);
 
   const Empty = () => {
     return (
@@ -29,9 +35,38 @@ export default function RightSection({ className = "" }) {
       </motion.section>
     )
   }
+
+  const handleRemoveFreind = () => {
+    const res = window.confirm('Are you sure you want to remove this friend?');
+    if (res) {
+      setFreindsWith(null);
+    }
+  }
   return (
     <div className={`${className}`}>
-      <Empty />
+      {!FreindsWith && <Empty />}
+      {FreindsWith && 
+        <div className='flex flex-col h-full bg-background2'>
+          <div className='flex justify-between items-center p-4 bg-background2'>
+            <div className='flex items-center gap-4'>
+              <img className='w-10 h-10 rounded-full' src={FreindsWith.Img} alt="" />
+              <div className='flex flex-col'>
+                <h1 className='text-lg font-bold'>{FreindsWith.Title}</h1>
+              </div>
+            </div>
+            <div>
+              <FaDeleteLeft onClick={handleRemoveFreind} className='text-gray cursor-pointer' title='remove freind' size={30}/>
+            </div>
+          </div>
+          <div className='flex-grow bg-background2 mainBg overflow-hidden'>
+            <Chat />
+          </div>
+          <div className=''>
+            <input className='w-full h-full bg-transparent outline-none border-0 p-4' 
+             type="text"  placeholder='Type a message' />
+          </div>
+        </div>
+      }
     </div>
   )
 }

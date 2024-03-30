@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { LiaSearchSolid } from "react-icons/lia";
-import Chat from "../UiComponents/Chat";
+import FreindsCard from "../UiComponents/FreindsCard";
 import {motion} from 'framer-motion';
 
 
@@ -19,22 +19,22 @@ export default function LeftSection({ className = "" }) {
       <input
         ref={inputRef}
         className="truncate pl-10 py-2 mb-5 rounded-lg text-gray bg-[#383838] focus:border-b-primary border-b-[#BBBBBB] border-b-2  outline-none w-full border-0 bg-transparent font-bold placeholder-gray"
-        type="text" placeholder="Search or start a new chat"
+        type="text" placeholder="Search or start a new Freinds"
       />
       <motion.div
         initial={{ opacity: 0, y:10 }}
         animate={{ opacity: 1, y:0 }}
-        className="h-[calc(100%-120px)] overflow-auto sm:pr-5 pr-2">
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        className="h-[calc(100%-120px)] space-y-3 overflow-auto sm:pr-5 pr-2">
+        <FreindsCard Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/300/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/200/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/100" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/100" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/500" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        <FreindsCard Img="https://picsum.photos/100/400" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
       </motion.div>
     </div>
   )
