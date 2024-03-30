@@ -1,12 +1,12 @@
 import {useContext} from 'react'
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from 'framer-motion'
-import { FreindsCtx } from '../../Store/FreindsContext';
+import { FriendsCtx } from '../../Store/FriendsContext';
 import Logo from '../../assets/logo.png';
 
 
 export default function Header() {
-  const {RightSectionActive, setRightSectionActive} = useContext(FreindsCtx);
+  const {RightSectionActive, setRightSectionActive} = useContext(FriendsCtx);
   return (
     <header className={`h-[50px] flex items-center bg-background1 ${(RightSectionActive && window.innerWidth < 900) ? 'px-0' : 'px-2'}`}>
       <div className='flex justify-center items-center h-full'>

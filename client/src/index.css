@@ -85,7 +85,12 @@
       width: 100px;
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 950px) {
+  .mytruncate {
+      width: 130px;
+  }
+}
+@media (min-width: 1000px) {
   .mytruncate {
       width: 150px;
   }

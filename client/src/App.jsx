@@ -1,10 +1,25 @@
+import { useEffect, useState } from 'react'
 import Root from './Components/Root'
-import FreindsContext from './Store/FreindsContext'
+import Loading from './Components/Loading'
+import FriendsContext from './Store/FriendsContext'
 function App() {
+  const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    const handleWebsiteLoad = ()=>{
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+    window.addEventListener('load',handleWebsiteLoad)
+    return ()=>{
+      window.removeEventListener('load',handleWebsiteLoad)
+    }
+  },[])
   return (
-    <FreindsContext>
-      <Root />
-    </FreindsContext>
+    <FriendsContext>
+      {loading && <Loading />}
+      {!loading && <Root />}
+    </FriendsContext>
   )
 }
 
