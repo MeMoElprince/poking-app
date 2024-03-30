@@ -4,6 +4,7 @@ import Logo from '../assets/logo.png';
 import Sidebar from "./RootComponents/Sidebar"
 import LeftSection from "./RootComponents/LeftSection"
 import RightSection from "./RootComponents/RightSection"
+import AddSection from "./RootComponents/AddSection"
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from 'framer-motion'
 
@@ -28,11 +29,11 @@ export default function Root() {
       window.removeEventListener('resize', handleResize);
     };
   }, [])
-  useEffect(()=>{
-    if(Turn !== 1){
+  useEffect(() => {
+    if (Turn !== 1) {
       setRightSectionActive(false)
     }
-  },[Turn])
+  }, [Turn])
   return (
     <main className="h-screen">
       <header className={`h-[50px] flex items-center bg-background1 ${(RightSectionActive && window.innerWidth < 768) ? 'px-0' : 'px-2'}`}>
@@ -54,8 +55,7 @@ export default function Root() {
       </header>
       <section className="h-[calc(100%-50px)] flex text-white bg-background1">
         <Sidebar Turn={Turn} setTurn={setTurn} className="min-w-[80px] bg-background1" />
-        {
-          Turn === 1 ?
+        {Turn === 1 &&
           <>
             {window.innerWidth >= 768 &&
               <>
@@ -74,7 +74,28 @@ export default function Root() {
               </>
             }
           </>
-          :
+        }
+        {Turn === 2 &&
+          <>
+            {window.innerWidth >= 768 &&
+              <>
+                <AddSection className="w-[380px] bg-background2" />
+                <RightSection className="flex-grow bg-background2" />
+              </>
+            }
+            {window.innerWidth < 768 &&
+              <>
+                {
+                  !RightSectionActive && <AddSection className="flex-grow bg-background2" />
+                }
+                {
+                  RightSectionActive && <RightSection className="flex-grow bg-background2" />
+                }
+              </>
+            }
+          </>
+        }
+        {Turn >= 3 &&
           <>
             <div className='flex justify-center items-center flex-grow bg-background2'>Coming Soon</div>
           </>

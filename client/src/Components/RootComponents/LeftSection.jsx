@@ -24,7 +24,7 @@ export default function LeftSection({ className = "" }) {
       <motion.div
         initial={{ opacity: 0, y:10 }}
         animate={{ opacity: 1, y:0 }}
-        className="h-[calc(100%-140px)] overflow-auto sm:pr-5 pr-2">
+        className="h-[calc(100%-120px)] overflow-auto sm:pr-5 pr-2">
         <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
         <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
         <Chat Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
