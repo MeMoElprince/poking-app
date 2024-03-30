@@ -1,17 +1,17 @@
-import { useState } from 'react';
 import logo from '../../assets/logo.png'
-import Signup from './Signup';
+import { useState } from 'react';
+import Login from './Login';
 
-export default function Login() {
-  const [Turn, setTurn] = useState(1);
+export default function Signup() {
+  const [Turn, setTurn] = useState(2);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(e);
   }
-  if (Turn === 2) {
+  if (Turn === 1) {
     return (
-      <Signup />
+      <Login />
     )
   }
   return (
@@ -37,10 +37,15 @@ export default function Login() {
                 <input type="password" name="Password" id="Password" placeholder="Password" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
               </div>
             </div>
-            <button className='text-center w-full bg-primary py-2 rounded-lg font-bold'>Sign in</button>
+            <div>
+              <label htmlFor="text" className='text-[#8000ff] text-[15px] font-bold'>User name</label>
+              <div className='focus:border-b-primary border-b-primary border-b-2 pb-2'>
+                <input type="text" name="text" id="text" placeholder="Your name" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
+              </div>
+            </div>
+            <button className='text-center w-full bg-primary py-2 rounded-lg font-bold'>Create account</button>
           </form>
-
-          <button className='cursor-pointer text-sm mt-10 border-b w-fit pb-1' onClick={()=>setTurn(2)}>Dont have account ?</button>
+          <button className='cursor-pointer text-sm mt-10 border-b w-fit pb-1' onClick={()=>setTurn(1)}>Allready have account ?</button>
         </div>
       </div>
     </div>
