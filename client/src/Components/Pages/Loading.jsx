@@ -1,4 +1,4 @@
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 import {motion} from 'framer-motion';
 export default function Loading() {
   return (
