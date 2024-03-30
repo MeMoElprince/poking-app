@@ -1,10 +1,10 @@
+import Root from './Components/Root'
+import FreindsContext from './Store/FreindsContext'
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </>
+    <FreindsContext>
+      <Root />
+    </FreindsContext>
   )
 }
 
