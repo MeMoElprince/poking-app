@@ -4,8 +4,9 @@ import { motion } from 'framer-motion'
 import { UserAuthCtx } from '../../Store/UserAuthContext';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
 import UserData from './UserData';
+import DataLayout from '../UiComponents/DataLayout';
 
-const OtpComponent = ({Type,setType}) => {
+const OtpComponent = ({ Type, setType }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const { setLogedIn } = useContext(UserAuthCtx);
   const [color, setColor] = useState('#757575');
@@ -34,13 +35,13 @@ const OtpComponent = ({Type,setType}) => {
     // fetch here and check if the otp is correct then check if the user is already in the database
     // if the user is already in the database then setLogedIn(true)
     // if the user is not in the database then setType(2)
-    
+
     setType(2);
     // setLogedIn(true);
   }
   const handleChange = (e, num) => {
     // remove all spaces from e.target.value
-    if(Loading)return;
+    if (Loading) return;
     e.target.value = e.target.value.replace(/\s/g, '');
     setColor('#757575');
     if (!e.target.value) {
@@ -98,7 +99,7 @@ const OtpComponent = ({Type,setType}) => {
   return (
     <form onSubmit={handleSubmit} className='flex flex-col space-y-10 w-full'>
       <div>
-        <label htmlFor="Email" className='text-[#8000ff] text-[15px] font-bold'>Enter Code</label>
+        <label className='text-[#8000ff] text-[15px] font-bold'>Enter Code</label>
         <motion.div
           initial={{ x: 0 }}
           animate={{ x: [-20, 0, 20, 0] }}
@@ -125,23 +126,13 @@ const OtpComponent = ({Type,setType}) => {
 }
 
 export default function VarifyCode() {
-  const [Type,setType] = useState(1);
-  if(Type===2){
+  const [Type, setType] = useState(1);
+  if (Type === 2) {
     return <UserData />
   }
   return (
-    <div className="flex justify-center items-center bg-background1 min-h-screen py-10">
-      <div className='sm:w-[400px] w-[calc(100%-20px)] rounded-xl flex flex-col justify-center items-center text-xl text-white bg-background2'>
-        <div className='flex justify-center items-center w-full text-center select-none pointer-events-none py-10'>
-          <div className='space-y-4'>
-            <img className='w-24' src={logo} alt={logo} />
-            <h1>WhosApp</h1>
-          </div>
-        </div>
-        <div className='flex flex-col items-center w-full bg-[#2a2a2a] p-10 '>
-          <OtpComponent Type={Type} setType={setType} />
-        </div>
-      </div>
-    </div>
+    <DataLayout>
+      <OtpComponent Type={Type} setType={setType} />
+    </DataLayout>
   )
 }

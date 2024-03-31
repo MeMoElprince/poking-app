@@ -1,11 +1,14 @@
-import { memo } from "react";
+/* eslint-disable react/prop-types */
+import { memo, useContext } from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import MessageCounter from "../UiComponents/MessageCounter";
 import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
 import { MdMobileFriendly } from "react-icons/md";
+import { BackDropCtx } from "../../Store/BackDropContext";
 
 export default memo(function Sidebar({Turn,setTurn,className=""}) {
+  const { setBackDropType } = useContext(BackDropCtx);
   const mainStyle = 'w-full flex justify-center items-center mainHover  py-5 relative'
   const changeTurn = (num) => {
     setTurn(num);
@@ -34,9 +37,9 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
           <CiSettings size={25}/>
         </div>
         <div 
-        // onClick={()=>{changeTurn(5)}} 
+        onClick={()=>{setBackDropType('UserLogo')}} 
         title="Logo"
-        className={`${Turn===5 ? 'bg-background2' : null} ${mainStyle}`}>
+        className={`${mainStyle}`}>
           <div className="w-[25px] h-[25px] overflow-hidden rounded-full bg-background2 imgPlaceholder">
             <img className="w-full h-full" src="https://picsum.photos/200/300" alt="" />
           </div>

@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import { useContext } from 'react'
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from 'framer-motion'
 import { FriendsCtx } from '../../Store/FriendsContext';
@@ -21,7 +21,7 @@ export default function Header() {
           </motion.div>
         }
         <img className="w-6 mr-2" src={Logo} alt="Logo" />
-        <h1 className="text-white">WhosApp</h1>
+        <h1 className="text-white">Piking App</h1>
       </div>
     </header>
   )

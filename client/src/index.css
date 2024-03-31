@@ -73,6 +73,13 @@ input:-webkit-autofill:active {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+
+
+
+
+
 @media (min-width: 290px) {
   .mytruncate,.mytruncate2 {
     width: 50px;

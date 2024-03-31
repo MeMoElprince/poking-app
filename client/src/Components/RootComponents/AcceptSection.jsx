@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import AcceptFriendCard from "../UiComponents/AcceptFriendCard";
 
 
+// eslint-disable-next-line react/prop-types
 export default function AcceptSection({ className = "" }) {
   return (
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>

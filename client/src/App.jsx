@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from 'react'
-import Root from './Components/Pages/Root'
 import Loading from './Components/Pages/Loading'
 import Login from './Components/Pages/Login'
 import FriendsContext from './Store/FriendsContext'
-import UserAuthContext from './Store/UserAuthContext'
 import { UserAuthCtx } from './Store/UserAuthContext'
+import BackDropHandler from './Components/BackDropHandler'
+import BackDropContext from './Store/BackDropContext'
+import Root from './Components/Root'
 
 function App() {
   const { LogedIn } = useContext(UserAuthCtx);
@@ -27,7 +28,9 @@ function App() {
         :
         LogedIn ?
           <FriendsContext>
-            <Root />
+            <BackDropContext>
+              <BackDropHandler />
+            </BackDropContext>
           </FriendsContext>
           :
           <Login />

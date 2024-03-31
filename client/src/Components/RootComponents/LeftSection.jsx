@@ -4,6 +4,7 @@ import FriendsCard from "../UiComponents/FriendsCard";
 import {motion} from 'framer-motion';
 
 
+// eslint-disable-next-line react/prop-types
 export default function LeftSection({ className = "" }) { 
   const inputRef = useRef(null);
   const inputFocus = () => {
@@ -19,7 +20,7 @@ export default function LeftSection({ className = "" }) {
       <input
         ref={inputRef}
         className="truncate pl-10 py-2 mb-5 rounded-lg text-gray bg-[#383838] focus:border-b-primary border-b-[#BBBBBB] border-b-2  outline-none w-full border-0 bg-transparent font-bold placeholder-gray"
-        type="text" placeholder="Search or start a new Friends"
+        type="text" placeholder="Search or start a new chat"
       />
       <motion.div
         initial={{ opacity: 0, y:10 }}
