@@ -3,8 +3,9 @@ import logo from '../../assets/logo.png'
 import { motion } from 'framer-motion'
 import { UserAuthCtx } from '../../Store/UserAuthContext';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
+import UserData from './UserData';
 
-const OtpComponent = () => {
+const OtpComponent = ({Type,setType}) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const { setLogedIn } = useContext(UserAuthCtx);
   const [color, setColor] = useState('#757575');
@@ -30,8 +31,12 @@ const OtpComponent = () => {
     setSubmitClicked(prev => prev + 1);
     console.log(otp.join(''));
     // return;
-    // fetch here and check if the otp is correct then setLogedIn(true)
-    setLogedIn(true);
+    // fetch here and check if the otp is correct then check if the user is already in the database
+    // if the user is already in the database then setLogedIn(true)
+    // if the user is not in the database then setType(2)
+    
+    setType(2);
+    // setLogedIn(true);
   }
   const handleChange = (e, num) => {
     // remove all spaces from e.target.value
@@ -111,7 +116,7 @@ const OtpComponent = () => {
           }
         </motion.div>
       </div>
-      <button className={`text-center h-12 w-full bg-primary py-2 rounded-lg font-bold flex justify-center items-center  ${Loading ? "opacity-20 cursor-not-allowed" : ""}`}>
+      <button className={`text-center text-lg h-12 w-full bg-primary py-2 rounded-lg font-bold flex justify-center items-center  ${Loading ? "opacity-20 cursor-not-allowed" : ""}`}>
         {Loading ? <LoadingSpinner /> : 'Confirm email'}
       </button>
     </form>
@@ -120,6 +125,10 @@ const OtpComponent = () => {
 }
 
 export default function VarifyCode() {
+  const [Type,setType] = useState(1);
+  if(Type===2){
+    return <UserData />
+  }
   return (
     <div className="flex justify-center items-center bg-background1 min-h-screen py-10">
       <div className='sm:w-[400px] w-[calc(100%-20px)] rounded-xl flex flex-col justify-center items-center text-xl text-white bg-background2'>
@@ -130,7 +139,7 @@ export default function VarifyCode() {
           </div>
         </div>
         <div className='flex flex-col items-center w-full bg-[#2a2a2a] p-10 '>
-          <OtpComponent />
+          <OtpComponent Type={Type} setType={setType} />
         </div>
       </div>
     </div>

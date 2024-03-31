@@ -4,8 +4,8 @@ import { CiLock } from "react-icons/ci";
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { FriendsCtx } from '../../Store/FriendsContext';
-import { FaDeleteLeft } from "react-icons/fa6";
 import { VscSend } from "react-icons/vsc";
+import { MdDelete } from "react-icons/md";
 
 import Chat from './Chat';
 
@@ -78,7 +78,7 @@ export default function RightSection({ className = "" }) {
               </div>
             </div>
             <div>
-              <FaDeleteLeft onClick={handleRemoveFriend} className='text-gray cursor-pointer' title='remove Friend' size={30} />
+              <MdDelete onClick={handleRemoveFriend} className='text-gray cursor-pointer' title='Delete Friend' size={30} />
             </div>
           </div>
           <div className='flex-grow bg-background2 mainBg overflow-hidden'>
