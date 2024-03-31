@@ -1,10 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import logo from '../../assets/logo.png'
 import { motion } from 'framer-motion'
-
+import { UserAuthCtx } from '../../Store/UserAuthContext';
 // <input type="email" name="Email" id="Email" placeholder="" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
 const OtpComponent = ({ Turn, setTurn }) => {
   const [color, setColor] = useState('#757575');
+  const { setLogedIn } = useContext(UserAuthCtx);
+  const [submit, setSubmit] = useState(false);
   const [submitClicked, setSubmitClicked] = useState(1);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [Focused, setFocused] = useState(0);
@@ -24,7 +26,7 @@ const OtpComponent = ({ Turn, setTurn }) => {
     e.preventDefault();
     setColor('#ff5959');
     setSubmitClicked(prev => prev + 1);
-    // setTurn(1);
+    setLogedIn(true);
   }
   const handleChange = (e, num) => {
     // remove all spaces from e.target.value
@@ -80,7 +82,6 @@ const OtpComponent = ({ Turn, setTurn }) => {
   useEffect(() => {
     inputRefs?.current[Focused]?.focus();
   }, [Focused])
-
 
   const myClass = `flex-grow border-[1px] border-[${color}] w-[40px] text-center outline-primary rounded-md bg-transparent py-3 font-bold`
   return (

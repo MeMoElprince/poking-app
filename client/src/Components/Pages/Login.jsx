@@ -3,7 +3,7 @@ import logo from '../../assets/logo.png'
 import VarifyCode from './VarifyCode';
 import { toast } from 'react-toastify';
 export default function Login() {
-  const [Turn, setTurn] = useState(2);
+  const [Turn, setTurn] = useState(1);
   const [Email, setEmail] = useState('');
 
   const handleSubmit = (e) => {
