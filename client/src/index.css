@@ -67,69 +67,102 @@ input:-webkit-autofill:active {
   z-index: -1;
 }
 
-.mytruncate {
+.mytruncate,.mytruncate2 {
   width: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@media (min-width: 280px) {
-  .t.mytruncate10 {
-    width: 10px;
-  }
-}
 
-@media (min-width: 320px) {
-  .mytruncate {
+
+
+
+
+
+@media (min-width: 290px) {
+  .mytruncate,.mytruncate2 {
     width: 50px;
   }
 }
-
-@media (min-width: 360px) {
-  .mytruncate {
+@media (min-width: 330px) {
+  .mytruncate,.mytruncate2 {
     width: 100px;
   }
 }
-
-@media (min-width: 420px) {
-  .mytruncate {
+@media (min-width: 400px) {
+  .mytruncate,.mytruncate2 {
     width: 150px;
   }
 }
-
-@media (min-width: 500px) {
-  .mytruncate {
+@media (min-width: 420px) {
+  .mytruncate,.mytruncate2 {
     width: 200px;
   }
 }
-
-@media (min-width: 600px) {
-  .mytruncate {
+@media (min-width: 480px) {
+  .mytruncate,.mytruncate2 {
     width: 250px;
+  }  
+}
+@media (min-width: 510px) {
+  .mytruncate,.mytruncate2 {
+    width: 280px;
+  }
+}
+@media (min-width: 530px) {
+  .mytruncate,.mytruncate2 {
+    width: 300px;
+  }
+}
+@media (min-width: 570px) {
+  .mytruncate,.mytruncate2 {
+    width: 350px;
+  }
+}
+@media (min-width: 610px) {
+  .mytruncate,.mytruncate2 {
+    width: 380px;
+  }
+}
+@media (min-width: 690px) {
+  .mytruncate,.mytruncate2 {
+    width: 410px;
+  }
+}
+@media (min-width: 730px) {
+  .mytruncate,.mytruncate2 {
+    width: 450px;
+  }
+}
+@media (min-width: 770px) {
+  .mytruncate,.mytruncate2 {
+    width: 500px;
+  }
+}
+@media (min-width: 810px) {
+  .mytruncate,.mytruncate2 {
+    width: 530px;
+  }
+}
+@media (min-width: 850px) {
+  .mytruncate,.mytruncate2 {
+    width: 550px;
+  }
+}
+@media (min-width: 851px) {
+  .mytruncate,.mytruncate2 {
+    width: 600px;
   }
 }
 
-@media (min-width: 700px) {
-  .mytruncate {
-    width: 400px;
-  }
-}
 
-@media (min-width: 767px) {
-  .mytruncate {
-    width: 100px;
-  }
-}
 
-@media (min-width: 950px) {
+@media (min-width: 900px) {
   .mytruncate {
-    width: 130px;
+    width: 170px;
   }
-}
-
-@media (min-width: 1000px) {
-  .mytruncate {
-    width: 150px;
+  .mytruncate2 {
+    width: fit-content;
   }
 }

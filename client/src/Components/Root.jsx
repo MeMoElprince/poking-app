@@ -1,15 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
 
-import Sidebar from "../RootComponents/Sidebar"
-import LeftSection from "../RootComponents/LeftSection"
-import RightSection from "../RootComponents/RightSection"
-import AcceptSection from "../RootComponents/AcceptSection"
-import AddSection from "../RootComponents/AddSection"
-import Header from '../RootComponents/Header';
-import { FriendsCtx } from '../../Store/FriendsContext';
+import Sidebar from "./RootComponents/Sidebar"
+import LeftSection from "./RootComponents/LeftSection"
+import RightSection from "./RootComponents/RightSection"
+import AcceptSection from "./RootComponents/AcceptSection"
+import AddSection from "./RootComponents/AddSection"
+import Header from './RootComponents/Header';
+import Settings from './RootComponents/Settings';
+import { FriendsCtx } from '../Store/FriendsContext';
 
 const handleTurn = (Turn, RightSectionActive) => {
-  const holder = (left,right) => {
+  const holder = (left) => {
     const TypeLeft = 
     left.name === "LeftSection" ? LeftSection :
     left.name === "AddSection" ? AddSection :
@@ -42,7 +43,8 @@ const handleTurn = (Turn, RightSectionActive) => {
       {Turn === 1 && holder(LeftSection,RightSection)}
       {Turn === 2 && holder(AddSection,RightSection)}
       {Turn === 3 && holder(AcceptSection,RightSection)}
-      {Turn >= 4 &&
+      {Turn === 4 && <Settings />}
+      {Turn >= 5 &&
         <>
           <div className='flex justify-center items-center flex-grow bg-background2'>Coming Soon</div>
         </>

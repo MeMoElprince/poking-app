@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import AddFriendCard from "../UiComponents/AddFriendCard";
 
 
+// eslint-disable-next-line react/prop-types
 export default function AddSection({ className = "" }) {
   const inputRef = useRef(null);
   const inputFocus = () => {
