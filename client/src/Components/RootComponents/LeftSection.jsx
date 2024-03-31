@@ -25,7 +25,8 @@ export default function LeftSection({ className = "" }) {
         initial={{ opacity: 0, y:10 }}
         animate={{ opacity: 1, y:0 }}
         className="h-[calc(100%-120px)] space-y-3 overflow-auto sm:pr-5 pr-2">
-        <FriendsCard Img="https://picsum.photos/200/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+          {/* name Should be max of 24 character */}
+        <FriendsCard Img="https://picsum.photos/200/300" Title="Moemen Mohammed Adam" Message="hello World" Time="12:00 PM" Counter={10} />
         <FriendsCard Img="https://picsum.photos/300/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
         <FriendsCard Img="https://picsum.photos/200/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
         <FriendsCard Img="https://picsum.photos/100/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />

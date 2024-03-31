@@ -2,14 +2,15 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import logo from '../../assets/logo.png'
 import { motion } from 'framer-motion'
 import { UserAuthCtx } from '../../Store/UserAuthContext';
-// <input type="email" name="Email" id="Email" placeholder="" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
-const OtpComponent = ({ Turn, setTurn }) => {
-  const [color, setColor] = useState('#757575');
-  const { setLogedIn } = useContext(UserAuthCtx);
-  const [submit, setSubmit] = useState(false);
-  const [submitClicked, setSubmitClicked] = useState(1);
+import LoadingSpinner from '../UiComponents/LoadingSpinner'
+
+const OtpComponent = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const { setLogedIn } = useContext(UserAuthCtx);
+  const [color, setColor] = useState('#757575');
   const [Focused, setFocused] = useState(0);
+  const [Loading, setLoading] = useState(false);
+  const [submitClicked, setSubmitClicked] = useState(1);
   const inputRefs = useRef([]);
   // #ff5959 red
   // #757575 gray
@@ -24,12 +25,17 @@ const OtpComponent = ({ Turn, setTurn }) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     setColor('#ff5959');
     setSubmitClicked(prev => prev + 1);
+    console.log(otp.join(''));
+    // return;
+    // fetch here and check if the otp is correct then setLogedIn(true)
     setLogedIn(true);
   }
   const handleChange = (e, num) => {
     // remove all spaces from e.target.value
+    if(Loading)return;
     e.target.value = e.target.value.replace(/\s/g, '');
     setColor('#757575');
     if (!e.target.value) {
@@ -55,7 +61,7 @@ const OtpComponent = ({ Turn, setTurn }) => {
       for (let i = num; i < 6; i++) {
         temp[i] = e.target.value[start];
         start++;
-        if(start === e.target.value.length) break;
+        if (start === e.target.value.length) break;
       }
       setOtp(temp);
       handleFocus(start)
@@ -105,18 +111,15 @@ const OtpComponent = ({ Turn, setTurn }) => {
           }
         </motion.div>
       </div>
-      <button className='text-center w-full bg-primary py-2 rounded-lg font-bold'>Confirm email</button>
+      <button className={`text-center h-12 w-full bg-primary py-2 rounded-lg font-bold flex justify-center items-center  ${Loading ? "opacity-20 cursor-not-allowed" : ""}`}>
+        {Loading ? <LoadingSpinner /> : 'Confirm email'}
+      </button>
     </form>
 
   )
 }
 
 export default function VarifyCode() {
-  const [Turn, setTurn] = useState(2);
-
-  if (Turn === 1) {
-    // console.log(2);
-  }
   return (
     <div className="flex justify-center items-center bg-background1 min-h-screen py-10">
       <div className='sm:w-[400px] w-[calc(100%-20px)] rounded-xl flex flex-col justify-center items-center text-xl text-white bg-background2'>
@@ -127,7 +130,7 @@ export default function VarifyCode() {
           </div>
         </div>
         <div className='flex flex-col items-center w-full bg-[#2a2a2a] p-10 '>
-          <OtpComponent Turn={Turn} setTurn={setTurn} />
+          <OtpComponent />
         </div>
       </div>
     </div>

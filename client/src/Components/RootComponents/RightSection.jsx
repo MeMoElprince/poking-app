@@ -45,6 +45,7 @@ export default function RightSection({ className = "" }) {
     const res = window.confirm('Are you sure you want to remove this friend?');
     if (res) {
       setFriendsWith(null);
+      console.log('Friend removed');
     }
   }
 
@@ -71,9 +72,9 @@ export default function RightSection({ className = "" }) {
         <div className='flex flex-col h-full bg-background2'>
           <div className='flex justify-between items-center p-4 bg-background2'>
             <div className='flex items-center gap-4'>
-              <img className='w-10 h-10 rounded-full' src={FriendsWith.Img} alt="" />
+              <img className='max-w-10 max-h-10 min-w-10 min-h-10 rounded-full' src={FriendsWith.Img} alt="" />
               <div className='flex flex-col'>
-                <h1 className='text-lg font-bold'>{FriendsWith.Title}</h1>
+                <h1 className='text-lg font-bold mytruncate2' title={FriendsWith.Title}>{FriendsWith.Title}</h1>
               </div>
             </div>
             <div>
