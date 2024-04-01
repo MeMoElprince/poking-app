@@ -5,7 +5,6 @@ const htmlToText = require('html-to-text');
 module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
-        this.name = user.name.split(' ')[0];
         this.url = url;
         this.from = 'WhosApp <email>';
     }
@@ -34,7 +33,6 @@ module.exports = class Email {
     async send(template, subject) {
         // 1) Render HTML based on a pug template
         const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
-            name: this.name,
             url: this.url,
             subject
         });
