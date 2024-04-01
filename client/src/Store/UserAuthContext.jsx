@@ -4,7 +4,7 @@ export const UserAuthCtx = createContext();
 
 // eslint-disable-next-line react/prop-types
 export default function UserAuthContext({children}) {
-  const [LogedIn, setLogedIn] = useState(true);
+  const [LogedIn, setLogedIn] = useState(false);
   return (
     <UserAuthCtx.Provider value={{LogedIn, setLogedIn}}>
       {children}
