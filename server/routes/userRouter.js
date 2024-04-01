@@ -5,7 +5,8 @@ const authController = require('../controllers/authController');
 const router = route.Router();
 
 
-router.get('/verify', authController.verifyEmail);
+router.post('/verify', authController.verifyEmail);
+router.post('/confirm', authController.confirmEmail);
 
 module.exports = router;
 
