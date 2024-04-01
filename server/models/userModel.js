@@ -2,11 +2,16 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        default: 'Hello User!'
     },
     userName: {
         type: String,
         unique: true
+    },
+    imgName: {
+        type: String,
+        default: 'default.jpg'
     },
     email: {
         type: String,
@@ -19,7 +24,8 @@ const userSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        select: false
     },
     secretToken: {
         type: String,
@@ -29,6 +35,24 @@ const userSchema = new mongoose.Schema({
         type: Date,
         select: false
     },
+    role: {
+        type: String,
+        enum: ['user'],
+        default: 'user'
+    },
+    friends: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    }],
+    friendRequestsSent: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    }],
+    friendRequestsReceived: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    }],
+
 });
 
 

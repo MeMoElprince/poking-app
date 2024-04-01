@@ -63,3 +63,27 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.protect = catchAsync(async (req, res, next) => {
+    let token;
+    if(req.headers.authorization && req.headers.authorization.startswith('Bearer'))
+        token = req.headers.authorization.split(' ')[1];
+    if(!token)
+        return next(new AppError('Please provide a token', 401));
+    const decoded = await jwtFactory.verifyToken(token);
+    const user = await User.findById(decoded.id);
+    if(!user)
+        return next(new AppError('User not found', 401));
+    req.user = user;
+    next();
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+    const {user} = req;
+    user.token = undefined;
+    user.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Logout successfully'
+    });
+});
+

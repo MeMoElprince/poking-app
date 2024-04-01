@@ -6,7 +6,7 @@ module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
         this.url = url;
-        this.from = 'WhosApp <email>';
+        this.from = 'PokingApp <email>';
     }
 
     newTransport() {
