@@ -35,7 +35,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     const { user } = req;
     const data = req.body;
     // filter out fields that are not allowed to be updated
-    const filteredDate = filterObj(data, 'name', 'username', 'imgName');
+    const filteredDate = filterObj(data, 'name', 'userName', 'imgName');
     const updated = await User.findByIdAndUpdate(user._id, filteredDate, { new: true, runValidators: true });
     res.status(200).json({
         status: 'success',
@@ -43,10 +43,3 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.ristrictTo = (...roles) => {
-    return (req, res, next) => {
-        if(!roles.includes(req.user.role))
-            return next(new AppError('You do not have permission to perform this action', 403));
-        next();
-    }
-}
