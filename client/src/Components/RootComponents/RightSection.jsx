@@ -29,10 +29,10 @@ export default function RightSection({ className = "" }) {
             animate={{ scale: 1 }}
             transition={{ duration: 1 }}
             src={Logo} className='w-32 opacity-20 select-none' alt="logo" />
-          <h1 className='text-2xl'>Piking App</h1>
+          <h1 className='text-2xl'>Poking App</h1>
           <p className='text-gray'>
             Send and receive messages without a phone number only with email. <br />
-            Use Piking App on your browser and phone at the same time.
+            Use Poking App on your browser and phone at the same time.
           </p>
         </div>
         <div className='text-gray mb-10 flex text-center items-center gap-2'>

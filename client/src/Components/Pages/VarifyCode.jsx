@@ -24,6 +24,7 @@ const OtpComponent = ({ Type, setType }) => {
         return;
       }
     }
+    setFocused(5);
   }
   const handleSubmit = (e) => {
     e.preventDefault();
