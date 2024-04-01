@@ -21,7 +21,7 @@ export default function Header() {
           </motion.div>
         }
         <img className="w-6 mr-2" src={Logo} alt="Logo" />
-        <h1 className="text-white">Piking App</h1>
+        <h1 className="text-white">Poking App</h1>
       </div>
     </header>
   )

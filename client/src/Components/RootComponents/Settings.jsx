@@ -80,7 +80,7 @@ export default function Settings() {
                 </div>
                 
               }
-              <img className={`w-24 h-24 imgPlaceholder rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src='https://picsum.photos/200/300' alt={logo} />
+              <img className={`w-24 h-24 imgPlaceholder rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src='https://picsum.photos/200/300' alt={UserName} />
             </motion.div>
             <h1>{UserName}</h1>
           </div>
