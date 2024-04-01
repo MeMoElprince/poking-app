@@ -11,7 +11,6 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Loading) return;
-    setLoading(true);
     if (Email === '') {
       toast(' Email is required', {
         position: "top-right",
@@ -25,6 +24,7 @@ export default function Login() {
       });
       return;
     }
+    setLoading(true);
     setTurn(2);
     console.log(Email);
   }

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { memo, useContext } from "react";
+import MessageCounter from "../../UiComponents/MessageCounter";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import MessageCounter from "../UiComponents/MessageCounter";
 import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
 import { MdMobileFriendly } from "react-icons/md";
-import { BackDropCtx } from "../../Store/BackDropContext";
+import { BackDropCtx } from "../../../Store/BackDropContext";
 
 export default memo(function Sidebar({Turn,setTurn,className=""}) {
   const { setBackDropType } = useContext(BackDropCtx);

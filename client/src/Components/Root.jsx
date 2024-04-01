@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 
-import Sidebar from "./RootComponents/Sidebar"
-import LeftSection from "./RootComponents/LeftSection"
-import RightSection from "./RootComponents/RightSection"
-import AcceptSection from "./RootComponents/AcceptSection"
-import AddSection from "./RootComponents/AddSection"
-import Header from './RootComponents/Header';
-import Settings from './RootComponents/Settings';
+import Sidebar from "./RootComponents/Sidebar/Sidebar"
+import LeftSection from "./RootComponents/LeftSection/LeftSection"
+import RightSection from "./RootComponents/RightSection/RightSection"
+import AcceptSection from "./RootComponents/LeftSection/AcceptSection"
+import AddSection from "./RootComponents/LeftSection/AddSection"
+import Header from './RootComponents/Header/Header';
+import Settings from './RootComponents/RightSection/Settings';
 import { FriendsCtx } from '../Store/FriendsContext';
 
 const handleTurn = (Turn, RightSectionActive) => {

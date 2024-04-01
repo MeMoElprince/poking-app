@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { MdEmail } from "react-icons/md";
 import { motion } from 'framer-motion';
-import AddFriendCard from "../UiComponents/AddFriendCard";
+import AddFriendCard from "../../UiComponents/AddFriendCard";
 
 
 // eslint-disable-next-line react/prop-types

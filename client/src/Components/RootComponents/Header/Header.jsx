@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from 'framer-motion'
-import { FriendsCtx } from '../../Store/FriendsContext';
-import Logo from '../../assets/logo.png';
+import { FriendsCtx } from '../../../Store/FriendsContext';
+import Logo from '../../../assets/logo.png';
 
 
 export default function Header() {

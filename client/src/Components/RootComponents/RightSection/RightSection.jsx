@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
-import Logo from '../../assets/logo.png';
+import Logo from '../../../assets/logo.png';
 import { CiLock } from "react-icons/ci";
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FriendsCtx } from '../../Store/FriendsContext';
+import { FriendsCtx } from '../../../Store/FriendsContext';
 import { VscSend } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
 

@@ -1,8 +1,7 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import LoadingSpinner from '../UiComponents/LoadingSpinner'
-import { UserAuthCtx } from '../../Store/UserAuthContext';
-import logo from '../../assets/logo.png';
+import LoadingSpinner from '../../UiComponents/LoadingSpinner'
+import { UserAuthCtx } from '../../../Store/UserAuthContext';
 import {motion} from 'framer-motion';
 import { BsImageFill } from "react-icons/bs";
 

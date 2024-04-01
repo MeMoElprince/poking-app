@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import Root from "./Root"
 import { BackDropCtx } from '../Store/BackDropContext'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const LogOutBackDrop = ({ setBackDropType }) => {
   const handleClick = (type) => {
