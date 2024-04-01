@@ -17,11 +17,13 @@ export default function LeftSection({ className = "" }) {
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>
       <h1 className="text-2xl font-bold">Chats</h1>
       <LiaSearchSolid onClick={inputFocus} className="relative top-7   left-3 cursor-text" />
-      <input
-        ref={inputRef}
-        className="truncate pl-10 py-2 mb-5 rounded-lg text-gray bg-[#383838] focus:border-b-primary border-b-[#BBBBBB] border-b-2  outline-none w-full border-0 bg-transparent font-bold placeholder-gray"
-        type="text" placeholder="Search or start a new chat"
-      />
+      <div className="pr-2">
+        <input
+          ref={inputRef}
+          className="truncate pl-10 py-2 mb-5 rounded-lg text-gray bg-[#383838] focus:border-b-primary border-b-[#BBBBBB] border-b-2  outline-none w-full border-0 bg-transparent font-bold placeholder-gray"
+          type="text" placeholder="Search or start a new chat"
+        />
+      </div>
       <motion.div
         initial={{ opacity: 0, y:10 }}
         animate={{ opacity: 1, y:0 }}
