@@ -55,9 +55,15 @@ app.use(globalErrorHandler);
 
 
 io.on('connection', (socket) => {
-    socket.emit('connect', {message: 'a new client connected'})
+    console.log(socket.id);
+    // the below code will run when the client emits a 'send-message' event to the server 
+    // and the server will broadcast the message to all the clients except the one that sent the message
+    // the message will be received by the client when the server emits a 'receive-message' event to all the clients 
+    socket.on('send-message', (data) => {
+        console.log(data);
+        socket.broadcast.emit('receive-message', data);
+    });
 })
-
 
 
 
