@@ -44,7 +44,7 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         className={`${mainStyle}`}>
           <div className="w-[25px] h-[25px] overflow-hidden rounded-full bg-background2 imgPlaceholder">
             {Image !== 'default.jpg' &&
-              <img className="w-full h-full " alt="" />
+              <img className="w-full h-full "  alt="" />
             }
           </div>
         </div>

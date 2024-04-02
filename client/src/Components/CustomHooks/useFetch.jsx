@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { UserAuthCtx } from "../../Store/Context/UserAuthContext";
-export default function useFetch(url, method, Token) {
+export default function useFetch(url, method, Token,body) {
   const [data, setData] = useState(null);
   const [Loading, setLoading] = useState(true);
   const { setLogedIn } = useContext(UserAuthCtx);
-
   useEffect(() => {
     const FetchFunc = async()=>{
       try {
@@ -15,6 +14,7 @@ export default function useFetch(url, method, Token) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${Token}`,
           },
+          body
         });
         const res = await response.json();
         setData(res);

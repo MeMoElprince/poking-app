@@ -4,20 +4,22 @@ import LoadingSpinner from '../../UiComponents/LoadingSpinner'
 import { UserAuthCtx } from '../../../Store/Context/UserAuthContext';
 import {motion} from 'framer-motion';
 import { BsImageFill } from "react-icons/bs";
+import { UpdateMe } from '../../../Store/urls';
+const url = UpdateMe();
 
 
 export default function Settings() {
   const { setLogedIn } = useContext(UserAuthCtx);
-  const { Name, setName, Image, setImage } = useContext(UserAuthCtx);
+  const { Name, setName, Image, setImage, Token } = useContext(UserAuthCtx);
+  const [ NameinSearch, setNameinSearch ] = useState(Name);
   const [Loading, setLoading] = useState(false);
   const [imgHover, setimgHover] = useState(false);
   const imgRef = useRef(null);
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (Loading) return;
-    setLoading(true);
-    if (Name === '') {
+    if (NameinSearch === '') {
       toast(' Name is required', {
         position: "top-right",
         autoClose: 5000,
@@ -30,13 +32,40 @@ export default function Settings() {
       });
       return;
     }
+
+    setLoading(true);
+    try {
+      const response = await fetch(url, {
+        method:'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Token}`,
+        },
+        body: JSON.stringify({
+          name: NameinSearch,
+          imgName: Image
+        })
+      });
+      const res = await response.json();
+      console.log({res});
+      if(res.status === 'success'){
+        setName(NameinSearch);
+        console.log('Success');
+      }else{
+        setLogedIn(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
     // fetch here and set the user data
     // then setLogedIn(true);
-    setLogedIn(true);
+    // setLogedIn(true);
   }
   const handleNameChange = (e) => {
     if (Loading) return;
-    setName(e.target.value);
+    setNameinSearch(e.target.value);
   }
   const handleFileChange = (e)=>{
     const size = e.target.files[0].size / 1e6;
@@ -55,6 +84,8 @@ export default function Settings() {
     }
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
+    console.log(URL.createObjectURL(e.target.files[0]));
+    setImage(URL.createObjectURL(e.target.files[0]));
   }
   return (
     <div className="flex justify-center items-center  min-h-screen w-full -mt-[50px]">
@@ -77,7 +108,7 @@ export default function Settings() {
               }
               <div className='w-24 h-24 imgPlaceholder'>
               {Image !== 'default.jpg' && 
-                <img className={`w-24 h-24  rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src={Image} />
+                <img className={`w-24 h-24  rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src='' />
               }
               </div>
             </motion.div>
@@ -89,7 +120,7 @@ export default function Settings() {
             <div>
               <label className='text-[#8000ff] text-[15px] font-bold'>Your Name</label>
               <div className='focus:border-b-primary border-b-primary border-b-2 pb-2'>
-                <input onChange={handleNameChange} value={Name} type="Name" name="Name" id="Name" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
+                <input onChange={handleNameChange} value={NameinSearch} type="Name" name="Name" id="Name" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
               </div>
             </div>
             <button className={`text-center text-lg h-12 w-full bg-primary py-2 rounded-lg font-bold flex justify-center items-center  ${Loading ? "opacity-20 cursor-not-allowed" : ""}`}>
