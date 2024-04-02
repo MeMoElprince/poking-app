@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import AcceptFriendCard from "../UiComponents/AcceptFriendCard";
+import AcceptFriendCard from "../../UiComponents/AcceptFriendCard";
 
 
 // eslint-disable-next-line react/prop-types

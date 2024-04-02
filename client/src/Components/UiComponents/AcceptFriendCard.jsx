@@ -5,10 +5,8 @@ import { FaRegTrashAlt } from "react-icons/fa";
 export default function AcceptFriendCard({ Img, Title }) {
 
   const handleAcceptFrined = ()=>{
-    console.log('Request Accepted');
   }
   const handleDeleteFrined = ()=>{
-    console.log('Request Deleted');
   }
   return (
     <div className="flex gap-5 hover:bg-[#383838] p-2 rounded-lg select-none">

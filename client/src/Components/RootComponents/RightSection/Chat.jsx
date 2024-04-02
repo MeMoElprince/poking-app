@@ -1,5 +1,5 @@
-import ReceivedMessage from '../UiComponents/ReceivedMessage';
-import SentMessage from '../UiComponents/SentMessage';
+import ReceivedMessage from '../../UiComponents/ReceivedMessage';
+import SentMessage from '../../UiComponents/SentMessage';
 import { useRef, useEffect } from 'react';
 const messages = [
   {type: 'sent', message: 'Hello', id: 1},

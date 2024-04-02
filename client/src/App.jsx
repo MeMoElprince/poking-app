@@ -1,21 +1,25 @@
 import { useEffect, useState, useContext } from 'react'
-import Loading from './Components/Pages/Loading'
+import LoadingPage from './Components/Pages/LoadingPage'
 import Login from './Components/Pages/Login'
-import FriendsContext from './Store/FriendsContext'
-import { UserAuthCtx } from './Store/UserAuthContext'
+import FriendsContext from './Store/Context/FriendsContext'
+import { UserAuthCtx } from './Store/Context/UserAuthContext'
 import BackDropHandler from './Components/BackDropHandler'
-import BackDropContext from './Store/BackDropContext'
-import Root from './Components/Root'
+import BackDropContext from './Store/Context/BackDropContext'
 
 function App() {
   const { LogedIn } = useContext(UserAuthCtx);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const handleWebsiteLoad = () => {
-      setTimeout(() => {
+      const TimeOut = setTimeout(() => {
         setLoading(false);
       }, 2000);
+
+      return () => {
+        clearTimeout(TimeOut)
+      }
     }
+    handleWebsiteLoad()
     window.addEventListener('load', handleWebsiteLoad)
     return () => {
       window.removeEventListener('load', handleWebsiteLoad)
@@ -24,7 +28,7 @@ function App() {
   return (
     <>
       {loading ?
-        <Loading />
+        <LoadingPage />
         :
         LogedIn ?
           <FriendsContext>

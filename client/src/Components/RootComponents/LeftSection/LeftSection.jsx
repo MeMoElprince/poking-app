@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { LiaSearchSolid } from "react-icons/lia";
-import FriendsCard from "../UiComponents/FriendsCard";
+import FriendsCard from "../../UiComponents/FriendsCard";
 import {motion} from 'framer-motion';
 
 
