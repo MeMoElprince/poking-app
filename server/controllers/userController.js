@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 }
 
 exports.getUser = catchAsync(async (req, res, next) => {
-    const { email } = req.body;
+    const { email } = req.params;
     const user = await User.findOne({email});
     if(!user)
         return next(new AppError('User not found', 404));

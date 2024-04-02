@@ -18,7 +18,7 @@ router.patch('/updateMe', authController.protect, userController.updateMe);
 
 
 router.get('/me', authController.protect, userController.getMe);
-router.get('/unique', userController.getUser);
+router.get('/unique/:email', userController.getUser);
 router.get('/friends', authController.protect, userController.getMyFriends);
 router.get('/friends-received', authController.protect, userController.getFriendRequestsReceived)
 
