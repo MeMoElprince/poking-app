@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server.js",
-    "prod": "NODE_ENV=production nodemon server.js"
+    "prod": "NODE_ENV=production nodemon server.js",
+    "Windowsdev": "SET NODE_ENV=development & nodemon server.js",
+    "Windowsprod": "SET NODE_ENV=production & nodemon server.js"
   },
   "keywords": [
     "chat",

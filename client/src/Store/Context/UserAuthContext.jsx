@@ -19,7 +19,7 @@ export default function UserAuthContext({ children }) {
       setName('');
       setImage('');
     }else{
-      Cookies.set('token', Token, { expires: 7 });
+      Cookies.set('token', Token, { expires: 40 });
     }
   },[LogedIn])
   return (

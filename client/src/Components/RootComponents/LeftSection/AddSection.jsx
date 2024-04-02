@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import AddFriendCard from "../../UiComponents/AddFriendCard";
 import { GetAUser } from "../../../Store/urls";
 import { UserAuthCtx } from "../../../Store/Context/UserAuthContext";
-const url = GetAUser();
 
 // eslint-disable-next-line react/prop-types
 export default function AddSection({ className = "" }) {
@@ -14,23 +13,20 @@ export default function AddSection({ className = "" }) {
     inputRef.current.focus();
   }
   const handleChange = async (e) => {
-    console.log(e.target.value);
-    // try {
-    //   const response = await fetch(url, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${Token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       email: e.target.value
-    //     })
-    //   });
-    //   const res = await response.json();
-    //   console.log({ res });
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
+    const url = GetAUser(e.target.value);
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Token}`,
+        },
+      });
+      const res = await response.json();
+      console.log({ res });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
   useEffect(() => {
     inputFocus();

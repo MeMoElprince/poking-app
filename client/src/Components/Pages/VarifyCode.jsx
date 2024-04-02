@@ -59,7 +59,7 @@ const OtpComponent = ({ Type, setType }) => {
         setType(2);
         setToken(data.token);
         Cookies.set('token',data.token,{
-          expires: 7,
+          expires: 40,
           secure: true
         });
       }else{
