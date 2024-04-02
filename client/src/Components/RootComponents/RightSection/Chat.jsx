@@ -1,6 +1,8 @@
 import ReceivedMessage from '../../UiComponents/ReceivedMessage';
 import SentMessage from '../../UiComponents/SentMessage';
 import { useRef, useEffect } from 'react';
+import { io } from 'socket.io-client';
+
 const messages = [
   {type: 'sent', message: 'Hello', id: 1},
   {type: 'received', message: 'Hi', id: 2},
@@ -26,9 +28,12 @@ const messages = [
 ];
 export default function Chat() {
   const chatRef = useRef();
-
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    const socket = io('http://localhost:2000');
+    socket.on('connect',()=>{
+      console.log('connected to socket server');
+    })
   },[])
   return (
     <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5'>
