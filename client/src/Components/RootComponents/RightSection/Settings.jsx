@@ -33,6 +33,19 @@ export default function Settings() {
       });
       return;
     }
+    if (NameinSearch.length > 24) {
+      toast(' Name Should be les than 24 characters', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
 
     setLoading(true);
     try {
