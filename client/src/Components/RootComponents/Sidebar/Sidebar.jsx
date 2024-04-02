@@ -5,10 +5,12 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
 import { MdMobileFriendly } from "react-icons/md";
-import { BackDropCtx } from "../../../Store/BackDropContext";
+import { BackDropCtx } from "../../../Store/Context/BackDropContext";
+import { UserAuthCtx } from "../../../Store/Context/UserAuthContext";
 
 export default memo(function Sidebar({Turn,setTurn,className=""}) {
   const { setBackDropType } = useContext(BackDropCtx);
+  const { Name, Image } = useContext(UserAuthCtx);
   const mainStyle = 'w-full flex justify-center items-center mainHover  py-5 relative'
   const changeTurn = (num) => {
     setTurn(num);
@@ -38,10 +40,12 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         </div>
         <div 
         onClick={()=>{setBackDropType('UserLogo')}} 
-        title="Logo"
+        title={Name}
         className={`${mainStyle}`}>
           <div className="w-[25px] h-[25px] overflow-hidden rounded-full bg-background2 imgPlaceholder">
-            <img className="w-full h-full" src="https://picsum.photos/200/300" alt="" />
+            {Image !== 'default.jpg' &&
+              <img className="w-full h-full " alt="" />
+            }
           </div>
         </div>
       </div>

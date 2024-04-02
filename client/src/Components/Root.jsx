@@ -7,15 +7,20 @@ import AcceptSection from "./RootComponents/LeftSection/AcceptSection"
 import AddSection from "./RootComponents/LeftSection/AddSection"
 import Header from './RootComponents/Header/Header';
 import Settings from './RootComponents/RightSection/Settings';
-import { FriendsCtx } from '../Store/FriendsContext';
+import { FriendsCtx } from '../Store/Context/FriendsContext';
+import useFetch from './CustomHooks/useFetch';
+import { UserAuthCtx } from '../Store/Context/UserAuthContext';
+import { GetMyData } from '../Store/urls';
+import LoadingPage from './Pages/LoadingPage'
+const url = GetMyData();
 
 const handleTurn = (Turn, RightSectionActive) => {
   const holder = (left) => {
-    const TypeLeft = 
-    left.name === "LeftSection" ? LeftSection :
-    left.name === "AddSection" ? AddSection :
-    left.name === "AcceptSection" ? AcceptSection :
-    LeftSection;
+    const TypeLeft =
+      left.name === "LeftSection" ? LeftSection :
+        left.name === "AddSection" ? AddSection :
+          left.name === "AcceptSection" ? AcceptSection :
+            LeftSection;
     const TypeRight = RightSection;
     return (
       <>
@@ -40,9 +45,9 @@ const handleTurn = (Turn, RightSectionActive) => {
   }
   return (
     <>
-      {Turn === 1 && holder(LeftSection,RightSection)}
-      {Turn === 2 && holder(AddSection,RightSection)}
-      {Turn === 3 && holder(AcceptSection,RightSection)}
+      {Turn === 1 && holder(LeftSection, RightSection)}
+      {Turn === 2 && holder(AddSection, RightSection)}
+      {Turn === 3 && holder(AcceptSection, RightSection)}
       {Turn === 4 && <Settings />}
       {Turn >= 5 &&
         <>
@@ -57,7 +62,9 @@ export default function Root() {
   const [mdScreen, setmdScreen] = useState(window.innerWidth < 900 ? false : true);
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [Turn, setTurn] = useState(1);
-
+  // url, method, body, Token
+  const { setName, setImage, Token } = useContext(UserAuthCtx);
+  const { data, Loading } = useFetch(url, 'GET', Token);
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
     const handleResize = () => {
@@ -78,6 +85,17 @@ export default function Root() {
       setRightSectionActive(false)
     }
   }, [Turn])
+  useEffect(() => {
+    if (data) {
+      setName(data?.user?.name);
+      setImage(data?.user?.imgName);
+    }
+  }, [data])
+  if (Loading) {
+    return (
+      <LoadingPage />
+    )
+  }
   return (
     <main className="h-screen overflow-hidden">
       <Header />

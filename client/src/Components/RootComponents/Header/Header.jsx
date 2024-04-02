@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from 'framer-motion'
-import { FriendsCtx } from '../../../Store/FriendsContext';
+import { FriendsCtx } from '../../../Store/Context/FriendsContext';
 import Logo from '../../../assets/logo.png';
 
 

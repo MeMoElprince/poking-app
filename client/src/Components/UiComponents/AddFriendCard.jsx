@@ -4,7 +4,6 @@ import { CiSquarePlus } from "react-icons/ci";
 export default function AddFrinedCard({ Img, Title }) {
 
   const handleAddFrined = ()=>{
-    console.log('Request Sent');
   }
   return (
     <div className="flex gap-5 hover:bg-[#383838] p-2 rounded-lg select-none">

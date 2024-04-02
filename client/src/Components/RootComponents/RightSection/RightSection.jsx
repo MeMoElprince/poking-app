@@ -4,7 +4,7 @@ import Logo from '../../../assets/logo.png';
 import { CiLock } from "react-icons/ci";
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FriendsCtx } from '../../../Store/FriendsContext';
+import { FriendsCtx } from '../../../Store/Context/FriendsContext';
 import { VscSend } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
 
@@ -46,14 +46,12 @@ export default function RightSection({ className = "" }) {
     const res = window.confirm('Are you sure you want to remove this friend?');
     if (res) {
       setFriendsWith(null);
-      console.log('Friend removed');
     }
   }
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (e.target[0].value === '') return;
-    console.log(e.target[0].value);
   }
 
   const handleInputChanges = (e) => {
@@ -73,7 +71,8 @@ export default function RightSection({ className = "" }) {
         <div className='flex flex-col h-full bg-background2'>
           <div className='flex justify-between items-center p-4 bg-background2'>
             <div className='flex items-center gap-4'>
-              <img className='max-w-10 max-h-10 min-w-10 min-h-10 rounded-full' src={FriendsWith.Img} alt="" />
+              <div className='imgPlaceholder'>
+                <img className='max-w-10 max-h-10 min-w-10 min-h-10 rounded-full' src={FriendsWith.Img} alt="" /></div>
               <div className='flex flex-col'>
                 <h1 className='text-lg font-bold mytruncate2' title={FriendsWith.Title}>{FriendsWith.Title}</h1>
               </div>

@@ -1,13 +1,14 @@
 import { useContext } from 'react'
 import Root from "./Root"
-import { BackDropCtx } from '../Store/BackDropContext'
+import { BackDropCtx } from '../Store/Context/BackDropContext'
+import { UserAuthCtx } from '../Store/Context/UserAuthContext'
 import { motion } from 'framer-motion'
 
-const LogOutBackDrop = ({ setBackDropType }) => {
+const LogOutBackDrop = ({ setBackDropType,setLogedIn }) => {
   const handleClick = (type) => {
     if(type==='Confirm'){
       // Log out
-      console.log('Log out');
+      setLogedIn(false);
     }else{
       setBackDropType('Root')
     }
@@ -36,6 +37,7 @@ const LogOutBackDrop = ({ setBackDropType }) => {
 }
 export default function BackDropHandler() {
   const { BackDropType, setBackDropType } = useContext(BackDropCtx);
+  const { setLogedIn } = useContext(UserAuthCtx);
 
   const Style = BackDropType !== 'Root' ? 'pointer-events-none select-none' : '';
   const handleClick = () => {
@@ -44,7 +46,7 @@ export default function BackDropHandler() {
   }
   return (
     <>
-      {BackDropType === 'UserLogo' && <LogOutBackDrop setBackDropType={setBackDropType} />}
+      {BackDropType === 'UserLogo' && <LogOutBackDrop setLogedIn={setLogedIn} setBackDropType={setBackDropType} />}
       <div onClick={handleClick}>
         <div className={`${BackDropType !== 'Root'?"brightness-[0.2]":""} ${Style}`}>
           <Root />

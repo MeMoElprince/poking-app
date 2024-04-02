@@ -1,14 +1,18 @@
 import { useState, useRef, useEffect, useContext } from 'react';
-import logo from '../../assets/logo.png'
+import { toast } from 'react-toastify';
 import { motion } from 'framer-motion'
-import { UserAuthCtx } from '../../Store/UserAuthContext';
+import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
 import UserData from './UserData';
 import DataLayout from '../UiComponents/DataLayout';
+import {VerifyOTP} from '../../Store/urls'
+import Cookies from 'js-cookie';
+const url = VerifyOTP();
 
 const OtpComponent = ({ Type, setType }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const { setLogedIn } = useContext(UserAuthCtx);
+  const { Email } = useContext(UserAuthCtx);
+  const { setToken } = useContext(UserAuthCtx);
   const [color, setColor] = useState('#757575');
   const [Focused, setFocused] = useState(0);
   const [Loading, setLoading] = useState(false);
@@ -26,19 +30,55 @@ const OtpComponent = ({ Type, setType }) => {
     }
     setFocused(5);
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    setLoading(true);
-    setColor('#ff5959');
-    setSubmitClicked(prev => prev + 1);
-    console.log(otp.join(''));
+    if (Loading) return;
+    if (otp.join('').length !== 6) {
+      setColor('#ff5959');
+      setSubmitClicked(prev => prev + 1);
+    }
     // return;
     // fetch here and check if the otp is correct then check if the user is already in the database
     // if the user is already in the database then setLogedIn(true)
     // if the user is not in the database then setType(2)
-
-    setType(2);
-    // setLogedIn(true);
+    try {
+      setLoading(true);
+      const response = await fetch(url,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: Email,
+          secretToken: otp.join('')
+         }),
+      });
+      const data = await response.json();
+      setLoading(false);
+      if(data.status === 'success'){
+        setType(2);
+        setToken(data.token);
+        Cookies.set('token',data.token,{
+          expires: 7,
+          secure: true
+        });
+      }else{
+        toast(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setColor('#ff5959');
+        setSubmitClicked(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
   const handleChange = (e, num) => {
     // remove all spaces from e.target.value
