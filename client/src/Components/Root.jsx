@@ -24,22 +24,11 @@ const handleTurn = (Turn, RightSectionActive) => {
     const TypeRight = RightSection;
     return (
       <>
-        {window.innerWidth >= 900 &&
-          <>
-            <TypeLeft className="min-w-[380px] bg-background2" />
-            <TypeRight className="flex-grow bg-background2" />
-          </>
-        }
-        {window.innerWidth < 900 &&
-          <>
-            {
-              !RightSectionActive && <TypeLeft className="flex-grow bg-background2" />
-            }
-            {
-              RightSectionActive && <TypeRight className="flex-grow bg-background2" />
-            }
-          </>
-        }
+        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
+        <TypeRight className={`${RightSectionActive?"block":"hidden"} main:block flex-grow bg-background2`} />
+        {/* {
+           RightSectionActive && <TypeRight className="flex-grow bg-background2" />
+        } */}
       </>
     )
   }
@@ -62,16 +51,13 @@ export default function Root() {
   const [mdScreen, setmdScreen] = useState(window.innerWidth < 900 ? false : true);
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [Turn, setTurn] = useState(1);
-  // url, method, body, Token
-  const { setName, setImage, Token } = useContext(UserAuthCtx);
-  const { data, Loading } = useFetch(url, 'GET', Token);
+  const { setName, setImage, setUserName } = useContext(UserAuthCtx);
+  const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 900) {
-        setmdScreen(false);
-      } else {
-        setmdScreen(true);
+      if (window.innerWidth >= 900) {
+        setRightSectionActive(false)
       }
     };
     window.addEventListener('resize', handleResize);
@@ -89,6 +75,7 @@ export default function Root() {
     if (data) {
       setName(data?.user?.name);
       setImage(data?.user?.imgName);
+      setUserName(data?.user?.userName);
     }
   }, [data])
   if (Loading) {
@@ -99,7 +86,7 @@ export default function Root() {
   return (
     <main className="h-screen overflow-hidden">
       <Header />
-      <section className="h-[calc(100%-50px)] flex text-white bg-background1">
+      <section className="h-[calc(100dvh-50px)] flex text-white bg-background1">
         <Sidebar Turn={Turn} setTurn={setTurn} className="min-w-[60px] bg-background1" />
         {handleTurn(Turn, RightSectionActive)}
       </section>

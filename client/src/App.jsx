@@ -11,15 +11,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const handleWebsiteLoad = () => {
-      const TimeOut = setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-
-      return () => {
-        clearTimeout(TimeOut)
-      }
+      setLoading(false);
     }
-    handleWebsiteLoad()
     window.addEventListener('load', handleWebsiteLoad)
     return () => {
       window.removeEventListener('load', handleWebsiteLoad)

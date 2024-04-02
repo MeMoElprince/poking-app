@@ -7,11 +7,15 @@ import { useContext } from 'react';
 import { FriendsCtx } from '../../../Store/Context/FriendsContext';
 import { VscSend } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
+import { DeleteFriend } from '../../../Store/urls';
+import { UserAuthCtx } from '../../../Store/Context/UserAuthContext';
+import { toast } from 'react-toastify';
 
 import Chat from './Chat';
 
 export default function RightSection({ className = "" }) {
   const { FriendsWith, setFriendsWith } = useContext(FriendsCtx);
+  const { Token } = useContext(UserAuthCtx);
   const [showSendBtn, setShowSendBtn] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -42,9 +46,33 @@ export default function RightSection({ className = "" }) {
     )
   }
 
-  const handleRemoveFriend = () => {
+  const handleRemoveFriend = async() => {
     const res = window.confirm('Are you sure you want to remove this friend?');
     if (res) {
+      const url = DeleteFriend(FriendsWith.id);
+      try{
+        const response = await fetch(url,{
+          method:'PATCH',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${Token}`
+          }
+        });
+        const res = await response.json();
+        console.log({res});
+        toast(res.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }catch(err){
+        console.error('Error:',err);
+      }
       setFriendsWith(null);
     }
   }

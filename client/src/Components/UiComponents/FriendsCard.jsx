@@ -2,11 +2,12 @@ import Person from '../../assets/Person.svg';
 import { useContext } from 'react';
 import { FriendsCtx } from '../../Store/Context/FriendsContext';
 
-export default function Friends({ Img, Title, Message, Time, Counter }) {
+export default function Friends({ Img, id, Title, Message, Time, Counter }) {
   const { FriendsWith, setFriendsWith, setRightSectionActive } = useContext(FriendsCtx);
   const handleClick = () => {
-    setRightSectionActive(true);
-    setFriendsWith({ Img, Title, Message, Time, Counter });
+    if(window.innerWidth < 900)
+      setRightSectionActive(true);
+    setFriendsWith({ Img, Title, Message, Time, Counter,id });
   }
   return (
     <div onClick={handleClick} className="flex gap-5 hover:bg-[#383838] p-2 rounded-lg select-none">
