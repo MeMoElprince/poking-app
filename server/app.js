@@ -3,12 +3,20 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const http = require('http');
+const socket = require('socket.io');
 
 const userRouter = require('./routes/userRouter');
 const globalErrorHandler = require('./controllers/globalErrorHandler');
 
 const app = express();
 
+const server = http.createServer(app);
+const io = socket(server, {
+    cors: {
+        origin: '*',
+    }
+});
 
 app.use(cors());
 
@@ -42,4 +50,15 @@ app.all('*', (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = app;
+
+
+
+
+io.on('connection', (socket) => {
+    socket.emit('connect', {message: 'a new client connected'})
+})
+
+
+
+
+module.exports = server;

@@ -124,3 +124,21 @@ exports.getFriendRequestsReceived = catchAsync(async (req, res, next) => {
         friends: data
     })
 });
+
+exports.deleteFriend = catchAsync(async (req, res, next) => {
+    const { user } = req;
+    const { id } = req.params;
+    if(!user.friends.includes(id))
+        return next(new AppError('He is not your friend', 400));
+    let index = user.friends.indexOf(id);
+    user.friends.splice(index, 1);
+    await user.save();
+    const friend = await User.findById(id);
+    index = friend.friends.indexOf(user.id);
+    friend.friends.splice(index, 1);
+    await friend.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Friend deleted successfully'
+    });
+});
