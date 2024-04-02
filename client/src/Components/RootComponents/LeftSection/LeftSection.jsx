@@ -2,10 +2,15 @@ import { useEffect, useRef } from "react";
 import { LiaSearchSolid } from "react-icons/lia";
 import FriendsCard from "../../UiComponents/FriendsCard";
 import {motion} from 'framer-motion';
+import { GetMyFriends } from '../../../Store/urls'
+import useFetch from "../../CustomHooks/useFetch";
+import LoadingSpinner from "../../UiComponents/LoadingSpinner";
+const url = GetMyFriends();
 
 
 // eslint-disable-next-line react/prop-types
 export default function LeftSection({ className = "" }) { 
+  const { data, Loading} = useFetch(url,'GET');
   const inputRef = useRef(null);
   const inputFocus = () => {
     inputRef.current.focus();
@@ -28,18 +33,25 @@ export default function LeftSection({ className = "" }) {
         initial={{ opacity: 0, y:10 }}
         animate={{ opacity: 1, y:0 }}
         className="h-[calc(100%-120px)] space-y-3 overflow-auto sm:pr-5 pr-2">
-          {/* name Should be max of 24 character */}
-        <FriendsCard Img="https://picsum.photos/200/300" Title="Moemen Mohammed Adam" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/300/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/200/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/300" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/100" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/200" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/100" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/500" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
-        <FriendsCard Img="https://picsum.photos/100/400" Title="SomeName" Message="hello World" Time="12:00 PM" Counter={10} />
+        {
+          Loading && 
+          <div className='flex justify-center items-center'>
+            <LoadingSpinner />
+          </div>
+        }
+        {
+          !Loading && data &&
+          <>
+            {data.count === 0 && <div className='text-center text-lg'>Add friend first</div>}
+            {data.count !== 0 && 
+              data.friends.map((item) => (
+                <FriendsCard key={item._id} id={item._id} Img="https://picsum.photos/200/300" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
+              ))
+            }
+          </>
+        }
       </motion.div>
+      
     </div>
   )
 }

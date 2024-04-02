@@ -20,7 +20,6 @@ const LogOutBackDrop = ({ setBackDropType, setLogedIn, Loading,setLoading }) => 
         },
       });
       const res = await response.json();
-      console.log({ res });
       setLoading(false)
       setLogedIn(false);
     } catch (error) {

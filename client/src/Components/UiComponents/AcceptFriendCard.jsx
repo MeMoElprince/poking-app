@@ -22,7 +22,6 @@ export default function AcceptFriendCard({ Img, Title, id }) {
       });
       const data = await response.json();
       setLoading(false);
-      console.log(data);
       toast(data.message, {
         position: "top-right",
         autoClose: 5000,
@@ -34,7 +33,7 @@ export default function AcceptFriendCard({ Img, Title, id }) {
         theme: "dark",
       });
     } catch (e) {
-      console.log('Error:', e);
+      console.error('Error:', e);
     }
   }
   const handleAcceptFriend = () => {
