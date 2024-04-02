@@ -113,3 +113,14 @@ exports.declineFriend = catchAsync(async (req, res, next) => {
         message: 'Friend declined successfully'
     })
 });
+
+exports.getFriendRequestsReceived = catchAsync(async (req, res, next) => {
+    const { user } = req;
+    const friendRequestsReceived = await User.findById(user.id).populate('friendRequestsReceived');
+    const data = friendRequestsReceived.friendRequestsReceived;
+    res.status(200).json({
+        status: 'success',
+        count: data.length,
+        friends: data
+    })
+});
