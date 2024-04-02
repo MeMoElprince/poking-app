@@ -106,9 +106,9 @@ export default function Settings() {
                 </div>
                 
               }
-              <div className='w-24 h-24 imgPlaceholder'>
+              <div className={`w-24 h-24 ${Image === 'default.jpg' && 'imgPlaceholder'}`}>
               {Image !== 'default.jpg' && 
-                <img className={`w-24 h-24  rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src='' />
+                <img className={`w-24 h-24  rounded-full select-none pointer-events-none ${imgHover?"opacity-20":''}`} src={Image} />
               }
               </div>
             </motion.div>

@@ -14,12 +14,12 @@ function App() {
       const TimeOut = setTimeout(() => {
         setLoading(false);
       }, 2000);
-      setLoading(false);
 
       return () => {
         clearTimeout(TimeOut)
       }
     }
+    handleWebsiteLoad()
     window.addEventListener('load', handleWebsiteLoad)
     return () => {
       window.removeEventListener('load', handleWebsiteLoad)
