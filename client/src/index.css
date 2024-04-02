@@ -42,6 +42,7 @@ input:-webkit-autofill:active {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: 100%;
 }
 
 .mainHover {

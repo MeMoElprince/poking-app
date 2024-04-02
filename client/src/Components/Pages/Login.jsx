@@ -1,17 +1,20 @@
-import { useState } from 'react';
-import logo from '../../assets/logo.png'
+import { useState, useContext } from 'react';
 import VarifyCode from './VarifyCode';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
 import DataLayout from '../UiComponents/DataLayout';
+import {UserAuthCtx} from '../../Store/Context/UserAuthContext'
+import {VerifyEmail} from '../../Store/urls'
+const url = VerifyEmail();
+
+
 export default function Login() {
   const [Turn, setTurn] = useState(1);
-  const [Email, setEmail] = useState('');
+  const {Email, setEmail} = useContext(UserAuthCtx);
   const [Loading, setLoading] = useState(false);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (Loading) return;
-    setLoading(true);
     if (Email === '') {
       toast(' Email is required', {
         position: "top-right",
@@ -25,8 +28,36 @@ export default function Login() {
       });
       return;
     }
-    setTurn(2);
-    console.log(Email);
+    setLoading(true);
+    try {
+      const response = await fetch(url,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: Email
+         }),
+      });
+      const data = await response.json();
+      setLoading(false);
+      if(data.status === 'success'){
+        setTurn(2);  
+      }else{
+        toast(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
   const handleOnChange = (e) => {
     if (Loading) return;

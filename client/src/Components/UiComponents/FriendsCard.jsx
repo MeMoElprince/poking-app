@@ -1,6 +1,6 @@
 import Person from '../../assets/Person.svg';
 import { useContext } from 'react';
-import { FriendsCtx } from '../../Store/FriendsContext';
+import { FriendsCtx } from '../../Store/Context/FriendsContext';
 
 export default function Friends({ Img, Title, Message, Time, Counter }) {
   const { FriendsWith, setFriendsWith, setRightSectionActive } = useContext(FriendsCtx);
