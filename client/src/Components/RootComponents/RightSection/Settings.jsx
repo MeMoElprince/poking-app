@@ -49,10 +49,8 @@ export default function Settings() {
         })
       });
       const res = await response.json();
-      console.log({res});
       if(res.status === 'success'){
         setName(NameinSearch);
-        console.log('Success');
       }else{
         setLogedIn(false);
       }

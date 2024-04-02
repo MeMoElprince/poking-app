@@ -10,7 +10,6 @@ const url = GetFriendsRequest();
 // eslint-disable-next-line react/prop-types
 export default function AcceptSection({ className = "" }) {
   const { data, Loading } = useFetch(url, 'GET');
-  
 
   return (
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>
@@ -30,8 +29,8 @@ export default function AcceptSection({ className = "" }) {
           <>
             {data.count === 0 && <div className='text-center text-lg'>No Friends Request</div>}
             {data.count !== 0 && 
-              data.map((item, index) => (
-                <AcceptFriendCard key={index} Img={item.imgName} Title={item.name} />
+              data.friends.map((item) => (
+                <AcceptFriendCard key={item._id} id={item._id} Img={item.imgName} Title={item.name} />
               ))
             }
           </>

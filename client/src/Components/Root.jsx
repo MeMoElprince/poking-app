@@ -24,7 +24,7 @@ const handleTurn = (Turn, RightSectionActive) => {
     const TypeRight = RightSection;
     return (
       <>
-        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:max-w-[380px] flex-grow bg-background2`} />
+        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
         <TypeRight className={`${RightSectionActive?"block":"hidden"} main:block flex-grow bg-background2`} />
         {/* {
            RightSectionActive && <TypeRight className="flex-grow bg-background2" />
@@ -57,7 +57,6 @@ export default function Root() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 900) {
-        console.log(1);
         setRightSectionActive(false)
       }
     };

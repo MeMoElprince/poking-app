@@ -17,7 +17,6 @@ export default function useFetch(url, method, body) {
           body
         });
         const res = await response.json();
-        console.log({useFetch:res});
         setData(res);
         setLoading(false);
         if(res.status !== 'success'){

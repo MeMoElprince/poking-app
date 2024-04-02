@@ -18,7 +18,6 @@ export default function AddSection({ className = "" }) {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(1);
     const url = GetAUser(inputRef.current.value);
     try {
       setLoading(true);
@@ -33,11 +32,9 @@ export default function AddSection({ className = "" }) {
       setLoading(false);
       if (res.status === 'success') {
         setData(res.user);
-        console.log(res.user);
       } else {
         setData('No such user');
       }
-      console.log({ res });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -54,7 +51,7 @@ export default function AddSection({ className = "" }) {
           <input
             ref={inputRef}
             className="truncate pl-10 py-2 mb-5 rounded-lg text-gray bg-[#383838] focus:border-b-primary border-b-[#BBBBBB] border-b-2  outline-none w-full border-0 bg-transparent font-bold placeholder-gray"
-            type="text" placeholder="Search for frineds by email"
+            type="text" placeholder="Search for Friends by email"
           />
         </form>
       </div>
@@ -79,7 +76,7 @@ export default function AddSection({ className = "" }) {
         {/* Searched and get a user */}
         {
           !Loading && Data !== 'No user' && Data !== 'No such user'&&
-            <AddFriendCard Img="https://picsum.photos/200/300" Title={Data.name} />
+            <AddFriendCard Img="https://picsum.photos/200/300" Title={Data.name} id={Data._id} />
         }
         {/* not searched yet */}
         {/* display nothing */}
