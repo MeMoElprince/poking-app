@@ -7,9 +7,8 @@ const userSchema = new mongoose.Schema({
     },
     userName: {
         type: String,
+        unique: true,
         sparse: true,
-        default: null,
-        unique: true
     },
     imgName: {
         type: String,
@@ -44,15 +43,16 @@ const userSchema = new mongoose.Schema({
     },
     friends: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        unique: true
     }],
     friendRequestsSent: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
     }],
     friendRequestsReceived: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
     }],
 
 });

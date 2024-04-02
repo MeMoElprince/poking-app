@@ -18,16 +18,15 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
     if(process.env.NODE_ENV === 'development')
         console.log({token});
 
-    let newUser;
     if(user)
     {
         user.secretToken = hashedToken;
         user.secretTokenExpires = Date.now() + 60 * 10 * 1000;
-        user.save();
+        await user.save();
     }
     else
     {
-        newUser = await User.create({
+        user = await User.create({
             email,
             secretToken: hashedToken,
             secretTokenExpires: Date.now() + 60 * 10 * 1000,
@@ -43,6 +42,8 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
         });
     } catch(err) {
         console.log({err});
+        user.secretToken = undefined;
+        user.secretTokenExpires = undefined;
         return next(new AppError('Error while sending email please try again later', 500));
     }
 });
@@ -60,7 +61,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     // generating token 
     const token = jwtFactory.createToken({id: user._id});
     user.token = token;
-    user.save();
+    await user.save();
     res.status(200).json({
         status: 'success',
         token
@@ -92,7 +93,7 @@ exports.ristrictTo = (...roles) => {
 exports.logout = catchAsync(async (req, res, next) => {
     const {user} = req;
     user.token = undefined;
-    user.save();
+    await user.save();
     res.status(200).json({
         status: 'success',
         message: 'Logout successfully'

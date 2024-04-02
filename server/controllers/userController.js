@@ -43,3 +43,73 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getMyFriends = catchAsync(async (req, res, next) => {
+    const { user } = req;
+    const friends = await User.findById(user.id).populate('friends');
+    res.status(200).json({
+        status: 'success',
+        count: friends.friends.length,
+        friends: friends.friends
+    });
+});
+
+exports.addFriend = catchAsync(async (req, res, next) => {
+    // getting user
+    const { user } = req;
+    // getting id of the firend
+    const { id } = req.params;
+    if(user.friends.includes(id))
+        return next(new AppError('He is your friend actually!!!', 400));
+    user.friendRequestsSent.push(id);
+    const friend = await User.findById(id);
+    friend.friendRequestsReceived.push(user.id);
+    await friend.save();    
+    await user.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Friend Request Sent'
+    })
+});
+
+exports.acceptFriend = catchAsync(async (req, res, next) => {
+    const {user} = req;
+    const { id } = req.params;
+    console.log(user.friendRequestsReceived);
+    if(!user.friendRequestsReceived.includes(id))
+        return next(new AppError('No friend request like this ID', 400));
+    user.friends.push(id);
+    let index = user.friendRequestsReceived.indexOf(id);
+    user.friendRequestsReceived.splice(index, 1);
+    await user.save();
+    const friend = await User.findById(id);
+    index = friend.friendRequestsSent.indexOf(user.id);
+    friend.friendRequestsSent.splice(index, 1);
+    friend.friends.push(user.id);
+    await friend.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Friend accepted successfully'
+    })
+});
+
+exports.declineFriend = catchAsync(async (req, res, next) => {
+    const { user } = req;
+    const { id } = req.params;
+
+    if(!user.friendRequestsReceived.includes(id))
+        return next(new AppError('No friend to decline with this ID', 400));
+
+    let index = user.friendRequestsReceived.indexOf(id);
+    user.friendRequestsReceived.splice(index, 1);
+    await user.save();
+
+    const friend = await User.findById(id);
+    index = friend.friendRequestsSent.indexOf(user.id);
+    friend.friendRequestsSent.splice(index, 1);
+    await friend.save();
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Friend declined successfully'
+    })
+});
