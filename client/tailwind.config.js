@@ -16,6 +16,9 @@ export default {
       },
       height: {
         'screen': '100dvh',
+      },
+      screens:{
+        main: '900px',
       }
     },
   },

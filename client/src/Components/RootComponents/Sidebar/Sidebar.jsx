@@ -27,7 +27,7 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         className={`${Turn===2 ? 'bg-background2' : null} ${mainStyle}`}>
           <MdAddBox size={25}/>
         </div>
-        <div onClick={()=>{changeTurn(3)}} title="Friend Requests"
+        <div onClick={()=>{changeTurn(3)}} title="Friends Request"
         className={`${Turn===3 ? 'bg-background2' : null} ${mainStyle}`}>
           <MessageCounter counter={22}/>
           <MdMobileFriendly size={25}/>

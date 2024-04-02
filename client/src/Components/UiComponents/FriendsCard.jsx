@@ -5,7 +5,8 @@ import { FriendsCtx } from '../../Store/Context/FriendsContext';
 export default function Friends({ Img, Title, Message, Time, Counter }) {
   const { FriendsWith, setFriendsWith, setRightSectionActive } = useContext(FriendsCtx);
   const handleClick = () => {
-    setRightSectionActive(true);
+    if(window.innerWidth < 900)
+      setRightSectionActive(true);
     setFriendsWith({ Img, Title, Message, Time, Counter });
   }
   return (

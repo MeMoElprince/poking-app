@@ -12,6 +12,7 @@ const UpdateMe = () => APIURL + 'api/v1/users/updateMe';
 const GetMyData = () => APIURL + 'api/v1/users/me';
 const GetMyFriends = () => APIURL + 'api/v1/users/friends';
 const GetAUser = (email) => APIURL + `api/v1/users/unique/${email}`;
+const GetFriendsRequest = () => APIURL + 'api/v1/users/friends-received';
 
 export {
   VerifyEmail,
@@ -19,5 +20,6 @@ export {
   UpdateMe,
   GetMyData,
   GetMyFriends,
-  GetAUser
+  GetAUser,
+  GetFriendsRequest
 };

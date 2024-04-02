@@ -24,22 +24,11 @@ const handleTurn = (Turn, RightSectionActive) => {
     const TypeRight = RightSection;
     return (
       <>
-        {window.innerWidth >= 900 &&
-          <>
-            <TypeLeft className="min-w-[380px] bg-background2" />
-            <TypeRight className="flex-grow bg-background2" />
-          </>
-        }
-        {window.innerWidth < 900 &&
-          <>
-            {
-              !RightSectionActive && <TypeLeft className="flex-grow bg-background2" />
-            }
-            {
-              RightSectionActive && <TypeRight className="flex-grow bg-background2" />
-            }
-          </>
-        }
+        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:max-w-[380px] flex-grow bg-background2`} />
+        <TypeRight className={`${RightSectionActive?"block":"hidden"} main:block flex-grow bg-background2`} />
+        {/* {
+           RightSectionActive && <TypeRight className="flex-grow bg-background2" />
+        } */}
       </>
     )
   }
@@ -62,16 +51,14 @@ export default function Root() {
   const [mdScreen, setmdScreen] = useState(window.innerWidth < 900 ? false : true);
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [Turn, setTurn] = useState(1);
-  // url, method, body, Token
-  const { setName, setImage, setUserName, Token } = useContext(UserAuthCtx);
-  const { data, Loading } = useFetch(url, 'GET', Token);
+  const { setName, setImage, setUserName } = useContext(UserAuthCtx);
+  const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 900) {
-        setmdScreen(false);
-      } else {
-        setmdScreen(true);
+      if (window.innerWidth >= 900) {
+        console.log(1);
+        setRightSectionActive(false)
       }
     };
     window.addEventListener('resize', handleResize);
