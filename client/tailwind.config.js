@@ -14,6 +14,9 @@ export default {
         black: '#000000',
         gray: '#9A9A9A',
       },
+      height: {
+        'screen': '100dvh',
+      }
     },
   },
   plugins: [],
