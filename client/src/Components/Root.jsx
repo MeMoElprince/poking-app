@@ -63,7 +63,7 @@ export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [Turn, setTurn] = useState(1);
   // url, method, body, Token
-  const { setName, setImage, Token } = useContext(UserAuthCtx);
+  const { setName, setImage, setUserName, Token } = useContext(UserAuthCtx);
   const { data, Loading } = useFetch(url, 'GET', Token);
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
@@ -89,6 +89,7 @@ export default function Root() {
     if (data) {
       setName(data?.user?.name);
       setImage(data?.user?.imgName);
+      setUserName(data?.user?.userName);
     }
   }, [data])
   if (Loading) {
@@ -99,7 +100,7 @@ export default function Root() {
   return (
     <main className="h-screen overflow-hidden">
       <Header />
-      <section className="h-[calc(100%-50px)] flex text-white bg-background1">
+      <section className="h-[calc(100dvh-50px)] flex text-white bg-background1">
         <Sidebar Turn={Turn} setTurn={setTurn} className="min-w-[60px] bg-background1" />
         {handleTurn(Turn, RightSectionActive)}
       </section>

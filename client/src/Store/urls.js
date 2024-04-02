@@ -1,8 +1,8 @@
 let APIURL = 'https://pokingapp.onrender.com/';
 
-if (process.env.NODE_ENV === 'development') {
-  APIURL = 'http://localhost:2000/';
-}
+// if (process.env.NODE_ENV === 'development') {
+//   APIURL = 'http://localhost:2000/';
+// }
 
 console.log({APIURL});
 
