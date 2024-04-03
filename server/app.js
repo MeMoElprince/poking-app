@@ -61,9 +61,10 @@ io.on('connection', (socket) => {
     // the message will be received by the client when the server emits a 'receive-message' event to all the clients 
     socket.on('send-message', (data) => {
         console.log(data);
-        socket.broadcast.emit('receive-message', data);
+        io.emit('receive-message', data);
     });
     socket.emit('message');
+    console.log({socket});
 })
 
 
