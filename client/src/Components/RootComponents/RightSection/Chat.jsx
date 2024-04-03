@@ -26,6 +26,16 @@ const messages = [
   {type: 'received', message: 'Well, let me know if you need any help brainstorming or developing it', id: 20},
   {type: 'sent', message: 'Thanks, I appreciate that. I might take you up on that offer', id: 21},
 ];
+
+// on 
+
+
+
+
+// emit 
+
+
+
 export default function Chat() {
   const chatRef = useRef();
   useEffect(() => {
@@ -34,12 +44,16 @@ export default function Chat() {
     socket.on('connect',()=>{
       console.log('connected to socket server');
     })
+    socket.on('message', () => {
+      console.log('messageeeeeee');
+    })
   },[])
   return (
     <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5'>
       {messages.map(e=>{
         return(
-          e.type === 'sent' ? 
+          e.type === 'sent' 
+          ? 
           <div key={e.id} style={{direction:'rtl'}}>
             <SentMessage message={e.message} /> 
           </div>

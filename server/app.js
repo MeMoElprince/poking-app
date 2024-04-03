@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
         console.log(data);
         socket.broadcast.emit('receive-message', data);
     });
+    socket.emit('message');
 })
 
 
