@@ -26,7 +26,7 @@ const roomSchema = new mongoose.Schema({
 roomSchema.pre('save', async function(next) {
     // if the room is a chat room, then there should be only two users in the room 
     if(this.users.length < 2)
-        return next(new AppError('A chat room must have two users', 400));
+        return next(new AppError('A chat room must have two users at least', 400));
     if(this.type === 'chat' && this.users.length > 2)
         return next(new AppError('A chat room can only have two users', 400));
     next();
