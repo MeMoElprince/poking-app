@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 
+
+const friendsSchema = new mongoose.Schema({
+    friend: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+    },
+    room: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Room',
+    }
+});
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -41,11 +53,12 @@ const userSchema = new mongoose.Schema({
         enum: ['user'],
         default: 'user'
     },
-    friends: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        unique: true
-    }],
+    // the below fields are for the user's profile page and are not required for the user to be created
+    // it consist of an array of friends and an array of friend requests
+    // each document of this collection will have a reference to the user's friends and friend requests
+    friends: [
+        friendsSchema
+    ],
     friendRequestsSent: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User',

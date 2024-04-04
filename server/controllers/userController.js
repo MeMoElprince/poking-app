@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Room = require('../models/roomModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const jwtFactory = require('../utils/tokenFactory');
@@ -45,11 +46,14 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
 exports.getMyFriends = catchAsync(async (req, res, next) => {
     const { user } = req;
-    const friends = await User.findById(user.id).populate('friends');
+    const me = await User.findById(user.id).populate('friends.friend');
+    const friends = me.friends.map(friend => {
+        return friend.friend;
+    });
     res.status(200).json({
         status: 'success',
-        count: friends.friends.length,
-        friends: friends.friends
+        count: friends.length,
+        friends
     });
 });
 
@@ -77,14 +81,24 @@ exports.acceptFriend = catchAsync(async (req, res, next) => {
     console.log(user.friendRequestsReceived);
     if(!user.friendRequestsReceived.includes(id))
         return next(new AppError('No friend request like this ID', 400));
-    user.friends.push(id);
+    const newRoom = await Room.create({
+        users: [user.id, id],
+    });
+    // user.friends.push(id);
+    const newObj = {
+        friend: id,
+        room: newRoom._id
+    }
+    user.friends.push(newObj);
     let index = user.friendRequestsReceived.indexOf(id);
     user.friendRequestsReceived.splice(index, 1);
     await user.save();
     const friend = await User.findById(id);
     index = friend.friendRequestsSent.indexOf(user.id);
     friend.friendRequestsSent.splice(index, 1);
-    friend.friends.push(user.id);
+    // friend.friends.push(user.id);          
+    newObj.friend = user.id;
+    friend.friends.push(newObj);
     await friend.save();
     res.status(200).json({
         status: 'success',
@@ -128,13 +142,31 @@ exports.getFriendRequestsReceived = catchAsync(async (req, res, next) => {
 exports.deleteFriend = catchAsync(async (req, res, next) => {
     const { user } = req;
     const { id } = req.params;
-    if(!user.friends.includes(id))
+
+    // if(!user.friends.includes(id))
+    //     return next(new AppError('He is not your friend', 400));
+
+    // check if the user is a friend
+    let isFriend = false;
+    let index = -1;
+    // check if the user is a friend
+    // and get the index of the friend
+    user.friends.forEach((friend, idx) => {
+        if(friend.friend == id) 
+            isFriend = true, index = idx;
+    });
+    if(!isFriend)
         return next(new AppError('He is not your friend', 400));
-    let index = user.friends.indexOf(id);
+    // delete the friend from the user's friends
     user.friends.splice(index, 1);
     await user.save();
     const friend = await User.findById(id);
-    index = friend.friends.indexOf(user.id);
+    // delete the user from the friend's friend
+    index = -1;
+    friend.friends.forEach((friend, idx) => {
+        if(friend.friend == user.id)
+            index = idx;
+    });
     friend.friends.splice(index, 1);
     await friend.save();
     res.status(200).json({
