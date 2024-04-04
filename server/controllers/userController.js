@@ -48,8 +48,10 @@ exports.getMyFriends = catchAsync(async (req, res, next) => {
     const { user } = req;
     const me = await User.findById(user.id).populate('friends.friend');
     const friends = me.friends.map(friend => {
-        return friend.friend;
+        const test = {...friend.friend._doc, room: friend.room};
+        return test;
     });
+    // console.log({friends});
     res.status(200).json({
         status: 'success',
         count: friends.length,
@@ -139,6 +141,7 @@ exports.getFriendRequestsReceived = catchAsync(async (req, res, next) => {
     })
 });
 
+// still to delete messages too
 exports.deleteFriend = catchAsync(async (req, res, next) => {
     const { user } = req;
     const { id } = req.params;
@@ -169,6 +172,10 @@ exports.deleteFriend = catchAsync(async (req, res, next) => {
     });
     friend.friends.splice(index, 1);
     await friend.save();
+
+    // delete the room
+    const room = await Room.findOneAndDelete({users: [user.id, id]}, {new: true});
+
     res.status(200).json({
         status: 'success',
         message: 'Friend deleted successfully'
