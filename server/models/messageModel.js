@@ -16,8 +16,8 @@ const messageSchema = new mongoose.Schema({
         required: [true, 'Message must have a room']
     },
     createdAt: {
-        type: Date,
-        default: Date.now()
+        type: Number,
+        default: () => Math.floor(Date.now() / 1000)
     }
 });
 

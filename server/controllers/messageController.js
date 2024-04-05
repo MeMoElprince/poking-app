@@ -23,7 +23,7 @@ exports.createMessage = async (data) => {
 
 exports.getMessages = async (roomId, page = 1, limit = 400) => {
     const skip = (page - 1) * limit;
-    const messages = await Message.find({room: roomId}).skip(skip).limit(limit).sort({createdAt: 1});
+    const messages = await Message.find({room: roomId}).skip(skip).limit(limit).sort({createdAt: -1});
     return messages;
 };
 
