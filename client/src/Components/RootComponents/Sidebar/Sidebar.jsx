@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { memo, useContext } from "react";
-import MessageCounter from "../../UiComponents/MessageCounter";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
@@ -20,7 +19,6 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
       <div className="w-full">
         <div onClick={()=>{changeTurn(1)}} title="Chat"
         className={`${Turn===1 ? 'bg-background2' : null} ${mainStyle}`}>
-          <MessageCounter counter={10}/>
           <IoChatbubbleEllipsesOutline size={25}/>
         </div>
         <div onClick={()=>{changeTurn(2)}} title="Add Friend"
@@ -29,7 +27,6 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         </div>
         <div onClick={()=>{changeTurn(3)}} title="Friends Request"
         className={`${Turn===3 ? 'bg-background2' : null} ${mainStyle}`}>
-          <MessageCounter counter={22}/>
           <MdMobileFriendly size={25}/>
         </div>
       </div>

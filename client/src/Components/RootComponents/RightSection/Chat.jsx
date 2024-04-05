@@ -43,23 +43,23 @@ export default function Chat() {
     
 
     socket.on('receive-message', (newMessage) => {
-      console.log('i revived');
       setMessages(prev => [newMessage, ...prev]);
+      console.log(chatRef.current.scrollHeight);
     });
 
   },[])
   return (
-    <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5'>
-      { messages && [...messages].reverse().map(e=>{
+    <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5 flex flex-col-reverse'>
+      { messages && [...messages].map((e,idx)=>{
         return(
           e.sender === Id 
           ? 
           <div key={e._id} style={{direction:'rtl'}}>
-            <SentMessage message={e.message} /> 
+            <SentMessage message={e.message} customeStyle={idx===0?"mt-5":'mt-0'} /> 
           </div>
           : 
           <div key={e._id} style={{direction:'ltr'}}>
-            <ReceivedMessage message={e.message} />
+            <ReceivedMessage message={e.message} customeStyle={idx===0?"mt-5":'mt-0'} />
           </div>
         )
       })}

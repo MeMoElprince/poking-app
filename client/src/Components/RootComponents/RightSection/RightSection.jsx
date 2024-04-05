@@ -63,7 +63,6 @@ export default function RightSection({ className = "" }) {
           }
         });
         const res = await response.json();
-        console.log({res});
         toast(res.message, {
           position: "top-right",
           autoClose: 5000,

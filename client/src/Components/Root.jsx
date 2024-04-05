@@ -15,21 +15,15 @@ import LoadingPage from './Pages/LoadingPage'
 const url = GetMyData();
 
 const handleTurn = (Turn, RightSectionActive) => {
+  const TypeRight = RightSection;
   const holder = (left) => {
     const TypeLeft =
       left.name === "LeftSection" ? LeftSection :
         left.name === "AddSection" ? AddSection :
           left.name === "AcceptSection" ? AcceptSection :
             LeftSection;
-    const TypeRight = RightSection;
     return (
-      <>
-        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
-        <TypeRight className={`${RightSectionActive?"block":"hidden"} main:block flex-grow bg-background2`} />
-        {/* {
-           RightSectionActive && <TypeRight className="flex-grow bg-background2" />
-        } */}
-      </>
+      <TypeLeft className={`${!RightSectionActive ? "block" : "hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
     )
   }
   return (
@@ -43,6 +37,7 @@ const handleTurn = (Turn, RightSectionActive) => {
           <div className='flex justify-center items-center flex-grow bg-background2'>Coming Soon</div>
         </>
       }
+      {Turn >= 1 && Turn <= 3 && <TypeRight className={`${RightSectionActive ? "block" : "hidden"} main:block flex-grow bg-background2`} />}
     </>
   )
 }
