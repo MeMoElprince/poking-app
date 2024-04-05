@@ -8,6 +8,7 @@ export default function UserAuthContext({ children }) {
   const [LogedIn, setLogedIn] = useState(true);
   const [Email, setEmail] = useState('');
   const [Name, setName] = useState('');
+  const [Id, setId] = useState('');
   const [userName, setUserName] = useState('');
   const [Image, setImage] = useState('');
   const [Token, setToken] = useState(Cookies.get('token'));
@@ -18,6 +19,7 @@ export default function UserAuthContext({ children }) {
       setEmail('');
       setName('');
       setImage('');
+      setId('');
       setUserName('');
     }else{
       Cookies.set('token', Token, { expires: 40 });
@@ -30,7 +32,8 @@ export default function UserAuthContext({ children }) {
       Name, setName,
       userName, setUserName,
       Token, setToken,
-      Image, setImage
+      Image, setImage,
+      Id, setId
     }}>
       {children}
     </UserAuthCtx.Provider>

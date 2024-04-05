@@ -1,10 +1,10 @@
 let APIURL = 'https://pokingapp.onrender.com/';
 
 // if (process.env.NODE_ENV === 'development') {
-//   APIURL = 'http://localhost:2000/';
+  APIURL = 'http://localhost:2000/';
 // }
 
-
+const GetAPIURL = () => APIURL;
 const VerifyEmail = () => APIURL + 'api/v1/users/verify';
 const VerifyOTP = () => APIURL + 'api/v1/users/Confirm';
 const UpdateMe = () => APIURL + 'api/v1/users/updateMe';
@@ -19,6 +19,7 @@ const DeclineFriend = (id) => APIURL + `api/v1/users/acceptFriend/${id}`;
 const DeleteFriend = (id) => APIURL + `api/v1/users/deleteFriend/${id}`;
 
 export {
+  GetAPIURL,
   VerifyEmail,
   VerifyOTP,
   UpdateMe,

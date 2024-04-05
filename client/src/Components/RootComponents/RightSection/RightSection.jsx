@@ -10,12 +10,16 @@ import { MdDelete } from "react-icons/md";
 import { DeleteFriend } from '../../../Store/urls';
 import { UserAuthCtx } from '../../../Store/Context/UserAuthContext';
 import { toast } from 'react-toastify';
-
+import { io } from 'socket.io-client';
+import { GetAPIURL } from '../../../Store/urls';
 import Chat from './Chat';
+import socket from '../../../Store/socket';
+const url = GetAPIURL();
+
 
 export default function RightSection({ className = "" }) {
   const { FriendsWith, setFriendsWith } = useContext(FriendsCtx);
-  const { Token } = useContext(UserAuthCtx);
+  const { Token, Id } = useContext(UserAuthCtx);
   const [showSendBtn, setShowSendBtn] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -80,6 +84,11 @@ export default function RightSection({ className = "" }) {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (e.target[0].value === '') return;
+    // Send the message to the server
+    const room = FriendsWith.room;
+    socket.emit('send-message', {room, message: e.target[0].value, sender: Id});
+    // Clear the input field
+    e.target[0].value = '';
   }
 
   const handleInputChanges = (e) => {

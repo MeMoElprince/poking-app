@@ -48,10 +48,9 @@ const handleTurn = (Turn, RightSectionActive) => {
 }
 
 export default function Root() {
-  const [mdScreen, setmdScreen] = useState(window.innerWidth < 900 ? false : true);
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [Turn, setTurn] = useState(1);
-  const { setName, setImage, setUserName } = useContext(UserAuthCtx);
+  const { setName, setImage, setUserName, setId } = useContext(UserAuthCtx);
   const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
@@ -76,6 +75,7 @@ export default function Root() {
       setName(data?.user?.name);
       setImage(data?.user?.imgName);
       setUserName(data?.user?.userName);
+      setId(data?.user?._id)
     }
   }, [data])
   if (Loading) {

@@ -44,9 +44,13 @@ export default function LeftSection({ className = "" }) {
           <>
             {data.count === 0 && <div className='text-center text-lg'>Add friend first</div>}
             {data.count !== 0 && 
-              data.friends.map((item) => (
-                <FriendsCard key={item._id} id={item._id} Img="https://picsum.photos/200/300" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
-              ))
+              data.friends.map((item) => {
+                return ( 
+                <FriendsCard room={item.room} key={item._id} id={item._id} Img="https://picsum.photos/200/300" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
+              )
+            }
+              
+              )
             }
           </>
         }
