@@ -6,8 +6,10 @@ const rateLimit = require('express-rate-limit');
 const http = require('http');
 const socket = require('socket.io');
 
+const catchAsync = require('./utils/catchAsync');
 const userRouter = require('./routes/userRouter');
 const globalErrorHandler = require('./controllers/globalErrorHandler');
+const messageController = require('./controllers/messageController');
 
 const app = express();
 
@@ -52,22 +54,27 @@ app.use(globalErrorHandler);
 
 
 
-
-
 io.on('connection', (socket) => {
-    console.log(socket.id);
-    // the below code will run when the client emits a 'send-message' event to the server 
-    // and the server will broadcast the message to all the clients except the one that sent the message
-    // the message will be received by the client when the server emits a 'receive-message' event to all the clients 
-    socket.on('send-message', (data) => {
-        console.log(data);
-        // emit the message to all the clients in the room with the sender
-        // socket.to(data.room).emit('receive-message', data);
-        // emit the message to all the clients in the room except the sender
-        // socket.broadcast.to(data.room).emit('receive-message', data);
+    socket.on('join-room', async (room) => {
+        socket.join(room);
+        console.log(`${socket.id} has joined room: `, room);
+        const messages = await messageController.getMessages(room);
+        socket.emit('get-messages', messages);
     });
-    socket.emit('message');
-    console.log({socket});
+
+
+    socket.on('send-message', async (data) => {
+        try{
+            const newMessage = await messageController.createMessage(data);
+            // the below code is for sending message to all clients except the sender
+            // socket.broadcast.to(data.room).emit('receive-message', newMessage);
+            // the below code is for sending message to all clients including the sender
+            socket.to(data.room).emit('receive-message', newMessage);
+
+        } catch (err) {
+            console.log(err.message);
+        }
+    });
 })
 
 

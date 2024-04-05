@@ -11,16 +11,19 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj;
 }
 
-exports.createMessage = catchAsync(async (data) => {
+exports.createMessage = async (data) => {
     const filteredData = filterObj(data, 'message', 'sender', 'room');
-    const newMessage = await Message.create(filteredData, {new: true});
+    const newMessage = new Message(filteredData);
+    await newMessage.save();
     return newMessage;
-});
+};
 
-exports.getMessages = catchAsync(async (roomId, page = 1, limit = 20) => {
+
+
+
+exports.getMessages = async (roomId, page = 1, limit = 30) => {
     const skip = (page - 1) * limit;
-    const messages = await Message.find({room: roomId}).skip(skip).limit(limit).sort({createdAt: -1});
+    const messages = await Message.find({room: roomId}).skip(skip).limit(limit).sort({createdAt: 1});
     return messages;
-});
-
+};
 

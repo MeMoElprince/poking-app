@@ -4,10 +4,5 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 
 
-exports.chat = catchAsync(async (roomId) => {
-    
-    return message;
-});
-
 
 // console.log(messages)
