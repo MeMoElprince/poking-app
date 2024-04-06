@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import AcceptFriendCard from "../../UiComponents/AcceptFriendCard";
 import { GetFriendsRequest } from '../../../Store/urls';
 import LoadingSpinner from '../../UiComponents/LoadingSpinner';
+import socket from '../../../Store/socket';
 import useFetch from '../../CustomHooks/useFetch'
 const url = GetFriendsRequest();
 
@@ -10,6 +11,16 @@ const url = GetFriendsRequest();
 // eslint-disable-next-line react/prop-types
 export default function AcceptSection({ className = "" }) {
   const { data, Loading } = useFetch(url, 'GET');
+  console.log(data)
+  // const [data, setData] = useState('No user');
+  // const [Loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    // console.log(1)
+    socket.on('friend-request-received', (data) => {
+      console.log(data)
+    })
+  },[])
 
   return (
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>

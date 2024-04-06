@@ -32,6 +32,7 @@ export default function AddSection({ className = "" }) {
       setLoading(false);
       if (res.status === 'success') {
         setData(res.user);
+        console.log({res})
       } else {
         setData('No such user');
       }
@@ -76,7 +77,7 @@ export default function AddSection({ className = "" }) {
         {/* Searched and get a user */}
         {
           !Loading && Data !== 'No user' && Data !== 'No such user'&&
-            <AddFriendCard Img="https://picsum.photos/200/300" Title={Data.name} id={Data._id} />
+            <AddFriendCard Img="default.jpg" Title={Data.name} id={Data._id} />
         }
         {/* not searched yet */}
         {/* display nothing */}
