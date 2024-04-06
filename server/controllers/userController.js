@@ -31,7 +31,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
     let result = {...user._doc, isFriend, isFriendRequestSent, isFriendRequestReceived};
     res.status(200).json({
         status: 'success',
-        result
+        user:result
     });
 });
 
