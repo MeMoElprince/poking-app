@@ -15,12 +15,23 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { email } = req.params;
+    const currentUser = req.user;
+    
     const user = await User.findOne({email});
     if(!user)
-        return next(new AppError('User not found', 404));
+    return next(new AppError('User not found', 404));
+
+    let isFriend = false;
+    currentUser.friends.forEach((friend) => {
+        if(friend.friend == user.id) 
+            isFriend = true;
+    });
+    const isFriendRequestSent = currentUser.friendRequestsSent.includes(user.id);
+    const isFriendRequestReceived = currentUser.friendRequestsReceived.includes(user.id);
+    let result = {...user._doc, isFriend, isFriendRequestSent, isFriendRequestReceived};
     res.status(200).json({
         status: 'success',
-        user
+        user:result
     });
 });
 
@@ -66,6 +77,8 @@ exports.addFriend = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     if(user.friends.includes(id))
         return next(new AppError('He is your friend actually!!!', 400));
+    if(user.friendRequestsSent.includes(id))
+        return next(new AppError('Friend request already sent', 400));
     user.friendRequestsSent.push(id);
     const friend = await User.findById(id);
     friend.friendRequestsReceived.push(user.id);
@@ -80,9 +93,13 @@ exports.addFriend = catchAsync(async (req, res, next) => {
 exports.acceptFriend = catchAsync(async (req, res, next) => {
     const {user} = req;
     const { id } = req.params;
-    console.log(user.friendRequestsReceived);
     if(!user.friendRequestsReceived.includes(id))
         return next(new AppError('No friend request like this ID', 400));
+
+    // if firend request is there
+    if(user.friends.includes(id))
+        return next(new AppError('He is already your friend', 400));
+
     const newRoom = await Room.create({
         users: [user.id, id],
     });
@@ -193,3 +210,9 @@ exports.getNumberOfFriendRequests = async (id) => {
     const user = await User.findById(id);
     return user.friendRequestsReceived.length;    
 };
+
+
+exports.friendRequestsReceived = async(id) => {
+    const user = await User.findById(id).populate('friendRequestsReceived');
+    return user.friendRequestsReceived;
+}

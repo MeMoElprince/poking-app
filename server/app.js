@@ -42,7 +42,12 @@ app.use(express.json());
 
 
 app.use('/api/v1/users', userRouter);
-
+app.use('/sleep', (req, res, next) => {
+    res.status(200).json({
+        status: 'success',
+        message: 'I am not sleeping'
+    });
+});
 
 app.all('*', (req, res, next) => {
     res.status(404).json({
@@ -56,6 +61,17 @@ app.use(globalErrorHandler);
 
 
 io.on('connection', (socket) => {
+
+    socket.on('friend-request-sent', async (userId) => {
+        // get friend requests received from this user Id
+        try{
+            const friendRequestsReceived = await userController.friendRequestsReceived(userId);
+            io.to(userId).emit('friend-request-received', friendRequestsReceived);
+        } catch(err) {
+
+        } 
+
+    });
 
     socket.on('connect-user', async (userId) => {
         try{
