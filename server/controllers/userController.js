@@ -173,12 +173,17 @@ exports.deleteFriend = catchAsync(async (req, res, next) => {
     friend.friends.splice(index, 1);
     await friend.save();
 
+    const room = await Room.findOne({users: [user.id, id]});
+    // delete the messages
+    const messages = await Message.deleteMany({room: room._id}, {new: true});
     // delete the room
-    const room = await Room.findOneAndDelete({users: [user.id, id]}, {new: true});
+    await Room.findByIdAndDelete(room._id);
+    
+    
 
     res.status(200).json({
         status: 'success',
-        message: 'Friend deleted successfully'
+        message: 'Friend deleted successfully with chat'
     });
 });
 
