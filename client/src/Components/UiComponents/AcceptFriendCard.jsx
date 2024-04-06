@@ -5,11 +5,11 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { AcceptFriend, DeclineFriend } from '../../Store/urls';
 import LoadingSpinner from './LoadingSpinner';
-import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../Store/Context/UserContext';
 
 export default function AcceptFriendCard({ Img, Title, id }) {
   const [Loading, setLoading] = useState(false);
-  const { Token } = useContext(UserAuthCtx);
+  const { Token } = useContext(UserCtx);
   const Fetching = async (url) => {
     try {
       setLoading(true);

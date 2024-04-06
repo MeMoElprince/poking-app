@@ -1,7 +1,7 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../UiComponents/LoadingSpinner'
-import { UserAuthCtx } from '../../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../../Store/Context/UserContext';
 import {motion} from 'framer-motion';
 import { BsImageFill } from "react-icons/bs";
 import { UpdateMe } from '../../../Store/urls';
@@ -9,9 +9,9 @@ const url = UpdateMe();
 
 
 export default function Settings() {
-  const { setLogedIn } = useContext(UserAuthCtx);
-  const { Name, setName, Image, setImage, Token } = useContext(UserAuthCtx);
-  const { userName, setUserName } = useContext(UserAuthCtx);
+  const { setLogedIn } = useContext(UserCtx);
+  const { Name, setName, Image, setImage, Token } = useContext(UserCtx);
+  const { userName, setUserName } = useContext(UserCtx);
   const [ NameinSearch, setNameinSearch ] = useState(Name);
   const [Loading, setLoading] = useState(false);
   const [imgHover, setimgHover] = useState(false);

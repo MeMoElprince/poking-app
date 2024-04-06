@@ -9,7 +9,7 @@ import Header from './RootComponents/Header/Header';
 import Settings from './RootComponents/RightSection/Settings';
 import { FriendsCtx } from '../Store/Context/FriendsContext';
 import useFetch from './CustomHooks/useFetch';
-import { UserAuthCtx } from '../Store/Context/UserAuthContext';
+import { UserCtx } from '../Store/Context/UserContext';
 import { GetMyData } from '../Store/urls';
 import LoadingPage from './Pages/LoadingPage'
 import socket from '../Store/socket';
@@ -48,7 +48,7 @@ const handleTurn = (Turn, RightSectionActive) => {
 export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [ Turn, setTurn ] = useState(1);
-  const { setName, setImage, setUserName, setId, Id } = useContext(UserAuthCtx);
+  const { setName, setImage, setUserName, setId, Id } = useContext(UserCtx);
   const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {

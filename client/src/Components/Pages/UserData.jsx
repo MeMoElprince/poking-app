@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
-import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../Store/Context/UserContext';
 import DataLayout from '../UiComponents/DataLayout'
 import {UpdateMe} from '../../Store/urls'
 import Cookies from 'js-cookie';
@@ -9,9 +9,9 @@ const url = UpdateMe();
 
 
 export default function UserData() {
-  const { setLogedIn } = useContext(UserAuthCtx);
-  const { Token } = useContext(UserAuthCtx);
-  const {Name, setName} = useContext(UserAuthCtx);
+  const { setLogedIn } = useContext(UserCtx);
+  const { Token } = useContext(UserCtx);
+  const {Name, setName} = useContext(UserCtx);
   const [Loading, setLoading] = useState(false);
   const handleSubmit = async(e) => {
     e.preventDefault();

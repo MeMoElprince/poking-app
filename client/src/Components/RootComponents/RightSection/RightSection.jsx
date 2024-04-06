@@ -8,7 +8,7 @@ import { FriendsCtx } from '../../../Store/Context/FriendsContext';
 import { VscSend } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
 import { DeleteFriend } from '../../../Store/urls';
-import { UserAuthCtx } from '../../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../../Store/Context/UserContext';
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 import { GetAPIURL } from '../../../Store/urls';
@@ -19,7 +19,7 @@ const url = GetAPIURL();
 
 export default function RightSection({ className = "" }) {
   const { FriendsWith, setFriendsWith } = useContext(FriendsCtx);
-  const { Token, Id } = useContext(UserAuthCtx);
+  const { Token, Id } = useContext(UserCtx);
   const [showSendBtn, setShowSendBtn] = useState(false);
   const [message, setMessage] = useState('');
 

@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react'
 import Root from "./Root"
 import { BackDropCtx } from '../Store/Context/BackDropContext'
-import { UserAuthCtx } from '../Store/Context/UserAuthContext'
+import { UserCtx } from '../Store/Context/UserContext'
 import { motion } from 'framer-motion'
 import { LogOut } from '../Store/urls'
 import LoadingSpinner from './UiComponents/LoadingSpinner'
 
 const LogOutBackDrop = ({ setBackDropType, setLogedIn, Loading,setLoading }) => {
-  const { Token } = useContext(UserAuthCtx);
+  const { Token } = useContext(UserCtx);
   const LogOutFetch = async () => {
     const url = LogOut();
     setLoading(true)
@@ -63,7 +63,7 @@ const LogOutBackDrop = ({ setBackDropType, setLogedIn, Loading,setLoading }) => 
 }
 export default function BackDropHandler() {
   const { BackDropType, setBackDropType } = useContext(BackDropCtx);
-  const { setLogedIn } = useContext(UserAuthCtx);
+  const { setLogedIn } = useContext(UserCtx);
   const [Loading,setLoading] = useState(false);
 
   const Style = BackDropType !== 'Root' ? 'pointer-events-none select-none' : '';

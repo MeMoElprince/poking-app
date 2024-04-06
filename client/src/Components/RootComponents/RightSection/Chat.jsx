@@ -3,7 +3,7 @@ import SentMessage from '../../UiComponents/SentMessage';
 import { useRef, useEffect, useContext, useState } from 'react';
 import { io } from 'socket.io-client';
 import { FriendsCtx } from '../../../Store/Context/FriendsContext.jsx';
-import { UserAuthCtx } from '../../../Store/Context/UserAuthContext.jsx';
+import { UserCtx } from '../../../Store/Context/UserContext.jsx';
 import { GetAPIURL } from '../../../Store/urls.js';
 import socket from '../../../Store/socket.js';
 const url = GetAPIURL();
@@ -25,7 +25,7 @@ export default function Chat() {
 
   const [ messages, setMessages ] = useState([]);
   const {FriendsWith} = useContext(FriendsCtx);
-  const {Id} = useContext(UserAuthCtx);
+  const {Id} = useContext(UserCtx);
   const chatRef = useRef();
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;

@@ -1,6 +1,6 @@
 import Person from '../../assets/Person.svg';
 import { CiSquarePlus } from "react-icons/ci";
-import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../Store/Context/UserContext';
 import { useContext, useState } from 'react';
 import { AddFriend } from '../../Store/urls';
 import { toast } from 'react-toastify';
@@ -8,7 +8,7 @@ import socket from '../../Store/socket';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AddFriendCard({ Img, Title, id }) {
-  const { Token } = useContext(UserAuthCtx);
+  const { Token } = useContext(UserCtx);
   const [Loading, setLoading] = useState(false);
   const handleAddFriend = async () => {
     const url = AddFriend(id);
