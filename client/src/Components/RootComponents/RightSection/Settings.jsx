@@ -101,8 +101,9 @@ export default function Settings() {
     }
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
-    console.log(URL.createObjectURL(e.target.files[0]));
-    setImage(URL.createObjectURL(e.target.files[0]));
+    // console.log(URL.createObjectURL(e.target.files[0]));
+    // setImage(URL.createObjectURL(e.target.files[0]));
+    setImage('default.jpg');
   }
   return (
     <div className="flex justify-center items-center min-h-screen  w-full -mt-[50px]">

@@ -23,8 +23,9 @@ export default function AddFriendCard({ Img, Title, id }) {
       });
       const data = await response.json();
       setLoading(false);
-      if(data.status === 'success'){
-        socket.emit('number-friend-request', id)
+      if (data.status === 'success') {
+        socket.emit('number-friend-request', id);
+        socket.emit('friend-request-sent', id);
       }
       toast(data.message, {
         position: "top-right",
@@ -44,7 +45,11 @@ export default function AddFriendCard({ Img, Title, id }) {
     <div className='relative'>
       <div className={`flex gap-5 hover:bg-[#383838] p-2 rounded-lg select-none ${Loading ? "pointer-events-none opacity-20" : "pointer-events-auto"}`}>
         <div className="min-w-[50px] h-[50px] flex justify-center items-center rounded-full overflow-hidden bg-[#414141] imgPlaceholder" style={{ background: Person }}>
-          <img className="w-full h-full" src={Img} alt="" />
+          <div className="w-full h-full imgPlaceholder">
+            {Img !== 'default.jpg' &&
+              <img className="w-full h-full " src={Img} alt="" />
+            }
+          </div>
         </div>
         <div className="flex flex-grow gap-2 relative overflow-hidden">
           <div className={`flex flex-col justify-center overflow-hidden`}>
@@ -61,6 +66,6 @@ export default function AddFriendCard({ Img, Title, id }) {
           <LoadingSpinner />
         </div>
       }
-    </div>
+    </div >
   )
 }

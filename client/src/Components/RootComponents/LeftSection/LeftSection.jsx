@@ -46,7 +46,7 @@ export default function LeftSection({ className = "" }) {
             {data.count !== 0 && 
               data.friends.map((item) => {
                 return ( 
-                <FriendsCard room={item.room} key={item._id} id={item._id} Img="https://picsum.photos/200/300" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
+                <FriendsCard room={item.room} key={item._id} id={item._id} Img="default.jpg" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
               )
             }
               

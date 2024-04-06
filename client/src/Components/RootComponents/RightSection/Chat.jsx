@@ -34,7 +34,6 @@ export default function Chat() {
     // connect(room);
     // getMessages(setMessages);
     socket.on('connect',()=>{
-      // console.log('connected to socket server');
       socket.emit('join-room', room);
     })
     socket.on('get-messages', (data) => {

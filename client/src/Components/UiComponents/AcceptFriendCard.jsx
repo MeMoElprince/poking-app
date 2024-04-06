@@ -46,7 +46,9 @@ export default function AcceptFriendCard({ Img, Title, id }) {
     <div className='relative'>
       <div className={`flex gap-5 hover:bg-[#383838] p-2 rounded-lg select-none ${Loading ? "pointer-events-none opacity-20" : "pointer-events-auto"}`}>
         <div className="min-w-[50px] h-[50px] flex justify-center items-center rounded-full overflow-hidden bg-[#414141] imgPlaceholder" style={{ background: Person }}>
-          <img className="w-full h-full" src={Img} alt="" />
+          {Img !== 'default.jpg' &&
+            <img className="w-full h-full " src={Img} alt="" />
+          }
         </div>
         <div className="flex flex-grow gap-2 relative overflow-hidden justify-between">
           <div className={`flex flex-col justify-center overflow-hidden`}>
