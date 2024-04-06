@@ -78,6 +78,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     const user = await User.findById(decoded.id);
     if(!user)
         return next(new AppError('User not found', 401));
+    if(token != user.token)
+        return next(new AppError('Token is invalid or has been expired', 401));
     req.user = user;
     next();
 });
