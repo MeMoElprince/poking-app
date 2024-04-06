@@ -1,8 +1,9 @@
-let APIURL = 'https://pokingapp.onrender.com/';
+let APIURL = import.meta.env.VITE_API_URL;
 
 // if (process.env.NODE_ENV === 'development') {
   // APIURL = 'http://localhost:2000/';
 // }
+
 
 const GetAPIURL = () => APIURL;
 const VerifyEmail = () => APIURL + 'api/v1/users/verify';
