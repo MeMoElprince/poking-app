@@ -41,7 +41,6 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
             message: 'Email verification has been sent successfully..'
         });
     } catch(err) {
-        console.log({err});
         user.secretToken = undefined;
         user.secretTokenExpires = undefined;
         return next(new AppError('Error while sending email please try again later', 500));

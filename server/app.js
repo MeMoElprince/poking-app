@@ -86,7 +86,6 @@ io.on('connection', (socket) => {
     socket.on('connect-user', async (userId) => {
         try{
             socket.join(userId);
-            console.log('User connected: ', userId);
         } catch (err) {
             console.log(err.message);
         }
