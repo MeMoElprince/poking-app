@@ -5,14 +5,14 @@ import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
 import { MdMobileFriendly } from "react-icons/md";
 import { BackDropCtx } from "../../../Store/Context/BackDropContext";
-import { UserAuthCtx } from "../../../Store/Context/UserAuthContext";
+import { UserCtx } from "../../../Store/Context/UserContext";
 import MessageCounter from "../../UiComponents/MessageCounter";
 import socket from "../../../Store/socket";
 
 export default memo(function Sidebar({ Turn, setTurn, className = "" }) {
   const [friendReq, setFriendReq] = useState(0);
   const { setBackDropType } = useContext(BackDropCtx);
-  const { Name, Image, Id } = useContext(UserAuthCtx);
+  const { Name, Image, Id } = useContext(UserCtx);
   const mainStyle = 'w-full flex justify-center items-center mainHover  py-5 relative'
 
   const changeTurn = (num) => {

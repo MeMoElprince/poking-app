@@ -3,12 +3,12 @@ import { MdEmail } from "react-icons/md";
 import { motion } from 'framer-motion';
 import AddFriendCard from "../../UiComponents/AddFriendCard";
 import { GetAUser } from "../../../Store/urls";
-import { UserAuthCtx } from "../../../Store/Context/UserAuthContext";
+import { UserCtx } from "../../../Store/Context/UserContext";
 import LoadingSpinner from "../../UiComponents/LoadingSpinner";
 
 // eslint-disable-next-line react/prop-types
 export default function AddSection({ className = "" }) {
-  const { Token } = useContext(UserAuthCtx);
+  const { Token } = useContext(UserCtx);
   const [Loading, setLoading] = useState(false);
   const [Data, setData] = useState('No user');
   const inputRef = useRef(null);

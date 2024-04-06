@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 import Login from './Components/Pages/Login'
 import FriendsContext from './Store/Context/FriendsContext'
-import { UserAuthCtx } from './Store/Context/UserAuthContext'
+import { UserCtx } from './Store/Context/UserContext'
 import BackDropHandler from './Components/BackDropHandler'
 import BackDropContext from './Store/Context/BackDropContext'
 
 function App() {
-  const { LogedIn } = useContext(UserAuthCtx);
+  const { LogedIn } = useContext(UserCtx);
   
   return (
     <>

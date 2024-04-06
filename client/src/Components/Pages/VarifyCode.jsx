@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion'
-import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
+import { UserCtx } from '../../Store/Context/UserContext';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
 import UserData from './UserData';
 import DataLayout from '../UiComponents/DataLayout';
@@ -11,8 +11,8 @@ const url = VerifyOTP();
 
 const OtpComponent = ({ Type, setType }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const { Email } = useContext(UserAuthCtx);
-  const { setToken } = useContext(UserAuthCtx);
+  const { Email } = useContext(UserCtx);
+  const { setToken } = useContext(UserCtx);
   const [color, setColor] = useState('#757575');
   const [Focused, setFocused] = useState(0);
   const [Loading, setLoading] = useState(false);

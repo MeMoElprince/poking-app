@@ -3,14 +3,14 @@ import VarifyCode from './VarifyCode';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../UiComponents/LoadingSpinner'
 import DataLayout from '../UiComponents/DataLayout';
-import {UserAuthCtx} from '../../Store/Context/UserAuthContext'
+import {UserCtx} from '../../Store/Context/UserContext'
 import {VerifyEmail} from '../../Store/urls'
 const url = VerifyEmail();
 
 
 export default function Login() {
   const [Turn, setTurn] = useState(1);
-  const {Email, setEmail} = useContext(UserAuthCtx);
+  const {Email, setEmail} = useContext(UserCtx);
   const [Loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();

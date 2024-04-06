@@ -1,16 +1,17 @@
 import { createContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie';
 
-export const UserAuthCtx = createContext();
+export const UserCtx = createContext();
 
 // eslint-disable-next-line react/prop-types
-export default function UserAuthContext({ children }) {
+export default function UserContext({ children }) {
   const [LogedIn, setLogedIn] = useState(true);
   const [Email, setEmail] = useState('');
   const [Name, setName] = useState('');
   const [Id, setId] = useState('');
   const [userName, setUserName] = useState('');
   const [Image, setImage] = useState('');
+  const [RequestChanged, setRequestChanged] = useState(false);
   const [Token, setToken] = useState(Cookies.get('token'));
   useEffect(()=>{
     if(!LogedIn){
@@ -26,16 +27,17 @@ export default function UserAuthContext({ children }) {
     }
   },[LogedIn])
   return (
-    <UserAuthCtx.Provider value={{
+    <UserCtx.Provider value={{
       LogedIn, setLogedIn,
       Email, setEmail,
       Name, setName,
       userName, setUserName,
       Token, setToken,
       Image, setImage,
-      Id, setId
+      Id, setId,
+      RequestChanged, setRequestChanged
     }}>
       {children}
-    </UserAuthCtx.Provider>
+    </UserCtx.Provider>
   )
 }
