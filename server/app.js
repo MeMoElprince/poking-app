@@ -55,9 +55,13 @@ app.use(globalErrorHandler);
 
 
 io.on('connection', (socket) => {
+
+    // socket.on('number-friend-request', (userId) => {
+
+    // })
+
     socket.on('join-room', async (room) => {
         socket.join(room);
-        console.log(`${socket.id} has joined room: `, room);
         const messages = await messageController.getMessages(room);
         socket.emit('get-messages', messages);
     });
@@ -66,15 +70,18 @@ io.on('connection', (socket) => {
     socket.on('send-message', async (data) => {
         try{
             const newMessage = await messageController.createMessage(data);
-            // the below code is for sending message to all clients except the sender
-            // socket.broadcast.to(data.room).emit('receive-message', newMessage);
-            // the below code is for sending message to all clients including the sender
             socket.to(data.room).emit('receive-message', newMessage);
 
         } catch (err) {
             console.log(err.message);
         }
     });
+
+
+
+
+
+
 })
 
 
