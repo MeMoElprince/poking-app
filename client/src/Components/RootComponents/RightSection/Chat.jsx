@@ -34,7 +34,7 @@ export default function Chat() {
     // connect(room);
     // getMessages(setMessages);
     socket.on('connect',()=>{
-      console.log('connected to socket server');
+      // console.log('connected to socket server');
       socket.emit('join-room', room);
     })
     socket.on('get-messages', (data) => {
@@ -44,7 +44,6 @@ export default function Chat() {
 
     socket.on('receive-message', (newMessage) => {
       setMessages(prev => [newMessage, ...prev]);
-      console.log(chatRef.current.scrollHeight);
     });
 
   },[])
