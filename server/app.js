@@ -42,7 +42,12 @@ app.use(express.json());
 
 
 app.use('/api/v1/users', userRouter);
-
+app.use('/sleep', (req, res, next) => {
+    res.status(200).json({
+        status: 'success',
+        message: 'I am not sleeping'
+    });
+});
 
 app.all('*', (req, res, next) => {
     res.status(404).json({
