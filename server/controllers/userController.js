@@ -181,3 +181,11 @@ exports.deleteFriend = catchAsync(async (req, res, next) => {
         message: 'Friend deleted successfully'
     });
 });
+
+
+
+// getting the number of friend requests
+exports.getNumberOfFriendRequests = async (id) => {
+    const user = await User.findById(id);
+    return user.friendRequestsReceived.length;    
+};

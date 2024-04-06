@@ -10,6 +10,7 @@ const catchAsync = require('./utils/catchAsync');
 const userRouter = require('./routes/userRouter');
 const globalErrorHandler = require('./controllers/globalErrorHandler');
 const messageController = require('./controllers/messageController');
+const userController = require('./controllers/userController');
 
 const app = express();
 
@@ -56,9 +57,10 @@ app.use(globalErrorHandler);
 
 io.on('connection', (socket) => {
 
-    // socket.on('number-friend-request', (userId) => {
-
-    // })
+    socket.on('number-friend-request', async (userId) => {
+        const numberOfFriendRequests = await userController.getNumberOfFriendRequests(userId);
+        socket.emit('number-friend-request', numberOfFriendRequests);
+    });
 
     socket.on('join-room', async (room) => {
         socket.join(room);
