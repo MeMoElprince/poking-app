@@ -3,6 +3,7 @@ const Room = require('../models/roomModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const jwtFactory = require('../utils/tokenFactory');
+const Message = require('../models/messageModel');
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
@@ -215,4 +216,14 @@ exports.getNumberOfFriendRequests = async (id) => {
 exports.friendRequestsReceived = async(id) => {
     const user = await User.findById(id).populate('friendRequestsReceived');
     return user.friendRequestsReceived;
+}
+
+
+exports.myFriends = async (id) => {
+    const me = await User.findById(id).populate('friends.friend');
+    const friends = me.friends.map(friend => {
+        const test = {...friend.friend._doc, room: friend.room};
+        return test;
+    });
+    return friends;
 }
