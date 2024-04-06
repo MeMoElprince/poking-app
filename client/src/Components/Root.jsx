@@ -16,21 +16,22 @@ const url = GetMyData();
 
 const handleTurn = (Turn, RightSectionActive) => {
   const TypeRight = RightSection;
-  const holder = (left) => {
+  
+  const holder = (name) => {
     const TypeLeft =
-      left.name === "LeftSection" ? LeftSection :
-        left.name === "AddSection" ? AddSection :
-          left.name === "AcceptSection" ? AcceptSection :
-            (<></>);
+      name === "LeftSection" ? LeftSection :
+        name === "AddSection" ? AddSection :
+          name === "AcceptSection" ? AcceptSection :
+              LeftSection;
     return (
       <TypeLeft className={`${!RightSectionActive ? "block" : "hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
     )
   }
   return (
     <>
-      {Turn === 1 && holder(LeftSection, RightSection)}
-      {Turn === 2 && holder(AddSection, RightSection)}
-      {Turn === 3 && holder(AcceptSection, RightSection)}
+      {Turn === 1 && holder('LeftSection')}
+      {Turn === 2 && holder('AddSection')}
+      {Turn === 3 && holder('AcceptSection')}
       {Turn === 4 && <Settings />}
       {Turn >= 5 &&
         <>
