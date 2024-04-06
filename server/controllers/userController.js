@@ -15,9 +15,27 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { email } = req.params;
+    const currentUser = req.user;
+
     const user = await User.findOne({email});
     if(!user)
         return next(new AppError('User not found', 404));
+
+    // check if the user is a friend
+    let isFriend = false;
+    // check if the user is a friend
+    // and get the index of the friend
+    currentUser.friends.forEach((friend) => {
+        if(friend.friend == user.id) 
+            isFriend = true;
+    });
+    const isFriendRequestSent = currentUser.friendRequestsSent.includes(user.id);
+    const isFriendRequestReceived = currentUser.friendRequestsReceived.includes(user.id);
+    
+    user.isFriend = isFriend;
+    user.isFriendRequestSent = isFriendRequestSent;
+    user.isFriendRequestReceived = isFriendRequestReceived;
+    
     res.status(200).json({
         status: 'success',
         user
