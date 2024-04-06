@@ -58,8 +58,12 @@ app.use(globalErrorHandler);
 io.on('connection', (socket) => {
 
     socket.on('number-friend-request', async (userId) => {
-        const numberOfFriendRequests = await userController.getNumberOfFriendRequests(userId);
-        socket.emit('number-friend-request', numberOfFriendRequests);
+        try{
+            const numberOfFriendRequests = await userController.getNumberOfFriendRequests(userId);
+            socket.emit('number-friend-request', numberOfFriendRequests);
+        } catch (err) {
+            console.log(err.message);
+        }
     });
 
     socket.on('join-room', async (room) => {
