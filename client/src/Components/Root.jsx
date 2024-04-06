@@ -12,6 +12,8 @@ import useFetch from './CustomHooks/useFetch';
 import { UserAuthCtx } from '../Store/Context/UserAuthContext';
 import { GetMyData } from '../Store/urls';
 import LoadingPage from './Pages/LoadingPage'
+import socket from '../Store/socket';
+
 const url = GetMyData();
 
 const handleTurn = (Turn, RightSectionActive) => {
@@ -46,7 +48,7 @@ const handleTurn = (Turn, RightSectionActive) => {
 export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [ Turn, setTurn ] = useState(1);
-  const { setName, setImage, setUserName, setId } = useContext(UserAuthCtx);
+  const { setName, setImage, setUserName, setId, Id } = useContext(UserAuthCtx);
   const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
@@ -57,9 +59,15 @@ export default function Root() {
     };
     window.addEventListener('resize', handleResize);
 
+    
+
+    
+
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+    
   }, [])
   useEffect(() => {
     if (Turn !== 1) {
@@ -71,14 +79,18 @@ export default function Root() {
       setName(data?.user?.name);
       setImage(data?.user?.imgName);
       setUserName(data?.user?.userName);
-      setId(data?.user?._id)
+      setId(data?.user?._id);
+      socket.emit('connect-user', data?.user?._id);
     }
+    
+    
   }, [data])
   if (Loading) {
     return (
       <LoadingPage />
     )
   }
+
   return (
     <main className="h-screen overflow-hidden">
       <Header />
