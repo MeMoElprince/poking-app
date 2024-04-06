@@ -6,11 +6,12 @@ import { toast } from 'react-toastify';
 import { AcceptFriend, DeclineFriend } from '../../Store/urls';
 import LoadingSpinner from './LoadingSpinner';
 import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
+import socket from '../../Store/socket';
 
 export default function AcceptFriendCard({ Img, Title, id }) {
   const [Loading, setLoading] = useState(false);
   const { Token } = useContext(UserAuthCtx);
-  const Fetching = async (url) => {
+  const Fetching = async (url, SocketEndPoint) => {
     try {
       setLoading(true);
       const response = await fetch(url, {
@@ -22,6 +23,15 @@ export default function AcceptFriendCard({ Img, Title, id }) {
       });
       const data = await response.json();
       setLoading(false);
+      if(data.status === 'success')
+      {
+        console.log('accepteddddd');
+        if(SocketEndPoint)
+        {
+          socket.emit(SocketEndPoint, id);
+        }
+      
+      }
       toast(data.message, {
         position: "top-right",
         autoClose: 5000,
@@ -37,7 +47,7 @@ export default function AcceptFriendCard({ Img, Title, id }) {
     }
   }
   const handleAcceptFriend = () => {
-    Fetching(AcceptFriend(id));
+    Fetching(AcceptFriend(id), 'friend-accepted');
   }
   const handleDeleteFriend = () => {
     Fetching(DeclineFriend(id));

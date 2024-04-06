@@ -1,7 +1,7 @@
 let APIURL = import.meta.env.VITE_API_URL;
 
 // if (process.env.NODE_ENV === 'development') {
-  // APIURL = 'http://localhost:2000/';
+  APIURL = 'http://localhost:2000/';
 // }
 
 

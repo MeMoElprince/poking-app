@@ -11,16 +11,25 @@ const url = GetFriendsRequest();
 // eslint-disable-next-line react/prop-types
 export default function AcceptSection({ className = "" }) {
   const { data, Loading } = useFetch(url, 'GET');
-  console.log(data)
-  // const [data, setData] = useState('No user');
-  // const [Loading, setLoading] = useState(false);
+  const [ friends, setFriends ] = useState([]);
+  // console.log(data)
+  // const [setData] = useState('No user');
+  // const [Loading, setLoading] = useState(true);
 
   useEffect(()=>{
     // console.log(1)
+
     socket.on('friend-request-received', (data) => {
-      console.log(data)
+      setFriends(data);
     })
+
   },[])
+
+  useEffect(()=>{    
+    if(data){
+      setFriends(data.friends);
+    }
+  },[data])
 
   return (
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>
@@ -38,9 +47,9 @@ export default function AcceptSection({ className = "" }) {
         {
           !Loading && data &&
           <>
-            {data.count === 0 && <div className='text-center text-lg'>No Friends Request</div>}
-            {data.count !== 0 && 
-              data.friends.map((item) => (
+            {friends.length === 0 && <div className='text-center text-lg'>No Friends Request</div>}
+            {friends.length !== 0 && 
+              friends.map((item) => (
                 <AcceptFriendCard key={item._id} id={item._id} Img={item.imgName} Title={item.name} />
               ))
             }
