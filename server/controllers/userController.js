@@ -210,3 +210,9 @@ exports.getNumberOfFriendRequests = async (id) => {
     const user = await User.findById(id);
     return user.friendRequestsReceived.length;    
 };
+
+
+exports.friendRequestsReceived = async(id) => {
+    const user = await User.findById(id).populate('friendRequestsReceived');
+    return user.friendRequestsReceived;
+}

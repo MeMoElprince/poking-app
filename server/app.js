@@ -62,6 +62,17 @@ app.use(globalErrorHandler);
 
 io.on('connection', (socket) => {
 
+    socket.on('friend-request-sent', async (userId) => {
+        // get friend requests received from this user Id
+        try{
+            const friendRequestsReceived = await userController.friendRequestsReceived(userId);
+            io.to(userId).emit('friend-request-received', friendRequestsReceived);
+        } catch(err) {
+
+        } 
+
+    });
+
     socket.on('connect-user', async (userId) => {
         try{
             socket.join(userId);
