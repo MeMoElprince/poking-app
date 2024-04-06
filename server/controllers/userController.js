@@ -66,6 +66,8 @@ exports.addFriend = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     if(user.friends.includes(id))
         return next(new AppError('He is your friend actually!!!', 400));
+    if(user.friendRequestsSent.includes(id))
+        return next(new AppError('Friend request already sent', 400));
     user.friendRequestsSent.push(id);
     const friend = await User.findById(id);
     friend.friendRequestsReceived.push(user.id);
@@ -80,9 +82,13 @@ exports.addFriend = catchAsync(async (req, res, next) => {
 exports.acceptFriend = catchAsync(async (req, res, next) => {
     const {user} = req;
     const { id } = req.params;
-    console.log(user.friendRequestsReceived);
     if(!user.friendRequestsReceived.includes(id))
         return next(new AppError('No friend request like this ID', 400));
+
+    // if firend request is there
+    if(user.friends.includes(id))
+        return next(new AppError('He is already your friend', 400));
+
     const newRoom = await Room.create({
         users: [user.id, id],
     });
