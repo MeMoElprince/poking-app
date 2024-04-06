@@ -4,6 +4,7 @@ import { UserAuthCtx } from '../../Store/Context/UserAuthContext';
 import { useContext, useState } from 'react';
 import { AddFriend } from '../../Store/urls';
 import { toast } from 'react-toastify';
+import socket from '../../Store/socket';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AddFriendCard({ Img, Title, id }) {
@@ -22,6 +23,9 @@ export default function AddFriendCard({ Img, Title, id }) {
       });
       const data = await response.json();
       setLoading(false);
+      if(data.status === 'success'){
+        socket.emit('number-friend-request', id)
+      }
       toast(data.message, {
         position: "top-right",
         autoClose: 5000,
