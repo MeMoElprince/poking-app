@@ -20,7 +20,8 @@ const handleTurn = (Turn, RightSectionActive) => {
     const TypeLeft =
       left.name === "LeftSection" ? LeftSection :
         left.name === "AddSection" ? AddSection :
-          left.name === "AcceptSection" && AcceptSection ;
+          left.name === "AcceptSection" ? AcceptSection :
+            (<></>);
     return (
       <TypeLeft className={`${!RightSectionActive ? "block" : "hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
     )
