@@ -20,8 +20,7 @@ const handleTurn = (Turn, RightSectionActive) => {
     const TypeLeft =
       left.name === "LeftSection" ? LeftSection :
         left.name === "AddSection" ? AddSection :
-          left.name === "AcceptSection" ? AcceptSection :
-            LeftSection;
+          left.name === "AcceptSection" && AcceptSection ;
     return (
       <TypeLeft className={`${!RightSectionActive ? "block" : "hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
     )
@@ -44,7 +43,7 @@ const handleTurn = (Turn, RightSectionActive) => {
 
 export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
-  const [Turn, setTurn] = useState(1);
+  const [ Turn, setTurn ] = useState(1);
   const { setName, setImage, setUserName, setId } = useContext(UserAuthCtx);
   const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes
