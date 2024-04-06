@@ -15,41 +15,37 @@ import LoadingPage from './Pages/LoadingPage'
 const url = GetMyData();
 
 const handleTurn = (Turn, RightSectionActive) => {
-  const holder = (left) => {
+  const TypeRight = RightSection;
+  
+  const holder = (name) => {
     const TypeLeft =
-      left.name === "LeftSection" ? LeftSection :
-        left.name === "AddSection" ? AddSection :
-          left.name === "AcceptSection" ? AcceptSection :
-            LeftSection;
-    const TypeRight = RightSection;
+      name === "LeftSection" ? LeftSection :
+        name === "AddSection" ? AddSection :
+          name === "AcceptSection" ? AcceptSection :
+              LeftSection;
     return (
-      <>
-        <TypeLeft className={`${!RightSectionActive?"block":"hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
-        <TypeRight className={`${RightSectionActive?"block":"hidden"} main:block flex-grow bg-background2`} />
-        {/* {
-           RightSectionActive && <TypeRight className="flex-grow bg-background2" />
-        } */}
-      </>
+      <TypeLeft className={`${!RightSectionActive ? "block" : "hidden"} main:min-w-[380px] main:max-w-[380px] flex-grow bg-background2`} />
     )
   }
   return (
     <>
-      {Turn === 1 && holder(LeftSection, RightSection)}
-      {Turn === 2 && holder(AddSection, RightSection)}
-      {Turn === 3 && holder(AcceptSection, RightSection)}
+      {Turn === 1 && holder('LeftSection')}
+      {Turn === 2 && holder('AddSection')}
+      {Turn === 3 && holder('AcceptSection')}
       {Turn === 4 && <Settings />}
       {Turn >= 5 &&
         <>
           <div className='flex justify-center items-center flex-grow bg-background2'>Coming Soon</div>
         </>
       }
+      {Turn >= 1 && Turn <= 3 && <TypeRight className={`${RightSectionActive ? "block" : "hidden"} main:block flex-grow bg-background2`} />}
     </>
   )
 }
 
 export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
-  const [Turn, setTurn] = useState(1);
+  const [ Turn, setTurn ] = useState(1);
   const { setName, setImage, setUserName, setId } = useContext(UserAuthCtx);
   const { data, Loading } = useFetch(url, 'GET');
   // mdScreen state here just to make sure the component re-renders when the window width changes

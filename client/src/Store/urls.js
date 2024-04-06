@@ -1,8 +1,9 @@
-let APIURL = 'https://pokingapp.onrender.com/';
+let APIURL = import.meta.env.VITE_API_URL;
 
 // if (process.env.NODE_ENV === 'development') {
   // APIURL = 'http://localhost:2000/';
 // }
+
 
 const GetAPIURL = () => APIURL;
 const VerifyEmail = () => APIURL + 'api/v1/users/verify';
@@ -15,7 +16,7 @@ const GetAUser = (email) => APIURL + `api/v1/users/unique/${email}`;
 const GetFriendsRequest = () => APIURL + 'api/v1/users/friends-received';
 const AddFriend = (id) => APIURL + `api/v1/users/addFriend/${id}`;
 const AcceptFriend = (id) => APIURL + `api/v1/users/acceptFriend/${id}`;
-const DeclineFriend = (id) => APIURL + `api/v1/users/acceptFriend/${id}`;
+const DeclineFriend = (id) => APIURL + `api/v1/users/declineFriend/${id}`;
 const DeleteFriend = (id) => APIURL + `api/v1/users/deleteFriend/${id}`;
 
 export {

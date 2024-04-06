@@ -63,7 +63,6 @@ export default function RightSection({ className = "" }) {
           }
         });
         const res = await response.json();
-        console.log({res});
         toast(res.message, {
           position: "top-right",
           autoClose: 5000,
@@ -83,12 +82,12 @@ export default function RightSection({ className = "" }) {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (e.target[0].value === '') return;
+    if (message === '') return;
     // Send the message to the server
     const room = FriendsWith.room;
-    socket.emit('send-message', {room, message: e.target[0].value, sender: Id});
+    socket.emit('send-message', {room, message: message, sender: Id});
     // Clear the input field
-    e.target[0].value = '';
+    setMessage('');
   }
 
   const handleInputChanges = (e) => {

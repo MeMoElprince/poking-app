@@ -1,26 +1,35 @@
 /* eslint-disable react/prop-types */
-import { memo, useContext } from "react";
-import MessageCounter from "../../UiComponents/MessageCounter";
+import { memo, useContext, useEffect, useState } from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
 import { MdAddBox } from "react-icons/md";
 import { MdMobileFriendly } from "react-icons/md";
 import { BackDropCtx } from "../../../Store/Context/BackDropContext";
 import { UserAuthCtx } from "../../../Store/Context/UserAuthContext";
+import MessageCounter from "../../UiComponents/MessageCounter";
+import socket from "../../../Store/socket";
 
 export default memo(function Sidebar({Turn,setTurn,className=""}) {
+  const [friendReq, setFriendReq] = useState(0);
   const { setBackDropType } = useContext(BackDropCtx);
-  const { Name, Image } = useContext(UserAuthCtx);
+  const { Name, Image, Id } = useContext(UserAuthCtx);
   const mainStyle = 'w-full flex justify-center items-center mainHover  py-5 relative'
+  
   const changeTurn = (num) => {
     setTurn(num);
   }
+
+  useEffect(() => {
+    socket.on('number-friend-request',(data)=>{
+      setFriendReq(data);
+    })
+  }, [Id])
+  
   return (
     <aside className={`flex flex-col justify-between items-center select-none ${className}`}>
       <div className="w-full">
         <div onClick={()=>{changeTurn(1)}} title="Chat"
         className={`${Turn===1 ? 'bg-background2' : null} ${mainStyle}`}>
-          <MessageCounter counter={10}/>
           <IoChatbubbleEllipsesOutline size={25}/>
         </div>
         <div onClick={()=>{changeTurn(2)}} title="Add Friend"
@@ -29,7 +38,7 @@ export default memo(function Sidebar({Turn,setTurn,className=""}) {
         </div>
         <div onClick={()=>{changeTurn(3)}} title="Friends Request"
         className={`${Turn===3 ? 'bg-background2' : null} ${mainStyle}`}>
-          <MessageCounter counter={22}/>
+          <MessageCounter counter={friendReq}/>
           <MdMobileFriendly size={25}/>
         </div>
       </div>
