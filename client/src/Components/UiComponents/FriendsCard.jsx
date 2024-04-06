@@ -24,7 +24,7 @@ export default function Friends({ Img, id, Title, Message, Time, Counter, room }
         <div className="flex flex-col justify-between items-end absolute right-0 rounded-xl w-[80px] z-10  h-full">
           <div className="text-primary w-[71px] font-bold">{Time}</div>
           <div className="rounded-full text-center font-bold bg-primary text-black w-[40px] ">
-            {Counter > 99 ? "99+" : Counter}
+            {Counter ? (Counter > 99 ? "99+" : Counter) : ''}
           </div>
         </div>
       </div>

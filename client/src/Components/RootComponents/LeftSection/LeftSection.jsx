@@ -1,23 +1,49 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LiaSearchSolid } from "react-icons/lia";
 import FriendsCard from "../../UiComponents/FriendsCard";
 import {motion} from 'framer-motion';
 import { GetMyFriends } from '../../../Store/urls'
 import useFetch from "../../CustomHooks/useFetch";
 import LoadingSpinner from "../../UiComponents/LoadingSpinner";
+import socket from '../../../Store/socket';
 const url = GetMyFriends();
 
 
 // eslint-disable-next-line react/prop-types
 export default function LeftSection({ className = "" }) { 
   const { data, Loading} = useFetch(url,'GET');
+  const [ friends, setFriends ] = useState([]);
+  const [ friendId, setFriendId ] = useState('');
+  const [ newMessage, setNewMessage ] = useState('');
+  const [ counter, setCounter ] = useState(0);
+
   const inputRef = useRef(null);
   const inputFocus = () => {
     inputRef.current.focus();
   }
+
   useEffect(() => {
     inputFocus();
+
+    socket.on('friend-request-accepted', (data) => {
+      setFriends(data);
+    });
+
+    socket.on('receive-message', (newMessage, friendId) => {
+      setNewMessage(newMessage.message);
+      setFriendId(friendId);
+      setCounter(1);
+    });
+
   }, []);
+
+  useEffect(() => {
+    if(data){
+      setFriends(data.friends);
+    }
+  }, [data]);
+
+
   return (
     <div className={`border-r-2 border-background1 pt-5 sm:pl-5 pl-2 ${className}`}>
       <h1 className="text-2xl font-bold">Chats</h1>
@@ -42,14 +68,22 @@ export default function LeftSection({ className = "" }) {
         {
           !Loading && data &&
           <>
-            {data.count === 0 && <div className='text-center text-lg'>Add friend first</div>}
-            {data.count !== 0 && 
-              data.friends.map((item) => {
-                return ( 
-                <FriendsCard room={item.room} key={item._id} id={item._id} Img="default.jpg" Title={item.name} Message="hello World" Time="12:00 PM" Counter={10} />
-              )
-            }
-              
+            {friends.length === 0 && <div className='text-center text-lg'>Add friend first</div>}
+            {friends.length !== 0 && 
+              friends.map((item) => {
+                if(item._id == friendId){
+                  console.log({newMessage}, {counter});
+                  return ( 
+                    <div key={item._id} onClick={()=>setFriendId('')}>
+                      <FriendsCard  room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
+                    </div>
+                  )
+                } else {
+                  return ( 
+                    <FriendsCard room={item.room} key={item._id} id={item._id} Img="default.jpg" Title={item.name} Message='' Time="12:00 PM" Counter={0} />
+                    )
+                }
+               }
               )
             }
           </>

@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/globalErrorHandler');
 const messageController = require('./controllers/messageController');
 const userController = require('./controllers/userController');
 
+const Room = require('./models/roomModel');
 const app = express();
 
 const server = http.createServer(app);
@@ -61,6 +62,15 @@ app.use(globalErrorHandler);
 
 
 io.on('connection', (socket) => {
+    socket.on('friend-accepted', async (userId) =>{
+        try{
+            const friends = await userController.myFriends(userId);
+            io.to(userId).emit('friend-request-accepted', friends);
+        } catch (err)
+        {
+            console.log(err.message);
+        }
+    });
 
     socket.on('friend-request-sent', async (userId) => {
         // get friend requests received from this user Id
@@ -68,10 +78,10 @@ io.on('connection', (socket) => {
             const friendRequestsReceived = await userController.friendRequestsReceived(userId);
             io.to(userId).emit('friend-request-received', friendRequestsReceived);
         } catch(err) {
-
+            console.log(err.message);
         } 
-
     });
+
 
     socket.on('connect-user', async (userId) => {
         try{
@@ -101,7 +111,10 @@ io.on('connection', (socket) => {
         try{    
             const newMessage = await messageController.createMessage(data);
             socket.to(data.room).emit('receive-message', newMessage);
-
+            // you have reciver id now 
+            const room = await Room.findById(data.room);
+            const toId = room.users.find(user => user != data.sender);
+            io.to(toId.toString()).emit('receive-message', newMessage, data.sender.toString());
         } catch (err) {
             console.log(err.message);
         }
