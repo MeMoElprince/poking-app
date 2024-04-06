@@ -57,10 +57,18 @@ app.use(globalErrorHandler);
 
 io.on('connection', (socket) => {
 
+    socket.on('connect-user', async (userId) => {
+        try{
+            socket.join(userId);
+        } catch (err) {
+            console.log(err.message);
+        }
+    });
+
     socket.on('number-friend-request', async (userId) => {
         try{
             const numberOfFriendRequests = await userController.getNumberOfFriendRequests(userId);
-            socket.emit('number-friend-request', numberOfFriendRequests);
+            io.to(userId).emit('number-friend-request', numberOfFriendRequests);
         } catch (err) {
             console.log(err.message);
         }
@@ -74,7 +82,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('send-message', async (data) => {
-        try{
+        try{    
             const newMessage = await messageController.createMessage(data);
             socket.to(data.room).emit('receive-message', newMessage);
 
