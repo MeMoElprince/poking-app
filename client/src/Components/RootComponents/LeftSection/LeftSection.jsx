@@ -25,7 +25,7 @@ export default function LeftSection({ className = "" }) {
   useEffect(() => {
     inputFocus();
 
-    socket.on('friend-request-accepted', (data) => {
+    socket.on('get-friends', (data) => {
       setFriends(data);
     });
 
@@ -34,6 +34,11 @@ export default function LeftSection({ className = "" }) {
       setFriendId(friendId);
       setCounter(1);
     });
+
+    return () => {
+      socket.off('get-friends');
+      socket.off('receive-message');
+    }
 
   }, []);
 

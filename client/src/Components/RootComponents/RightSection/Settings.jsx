@@ -136,7 +136,7 @@ export default function Settings() {
         <div className='flex flex-col items-center w-full bg-[#2a2a2a] p-10 '>
           <form onSubmit={handleSubmit} className='flex flex-col space-y-10 w-full'>
           <div>
-              <label className='text-[#8000ff] text-[15px] font-bold'>Your Name</label>
+              <label className='text-[#8000ff] text-[15px] font-bold'>Your Name <span className='opacity-70'>(what users will see)</span></label>
               <div className='focus:border-b-primary border-b-primary border-b-2 pb-2'>
                 <input onChange={handleNameChange} value={NameinSearch} type="Name" name="Name" id="Name" className='w-full bg-transparent outline-none border-none text-sm text-[#c286ff]' />
               </div>

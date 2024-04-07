@@ -45,6 +45,12 @@ export default function Chat() {
       setMessages(prev => [newMessage, ...prev]);
     });
 
+    return () => {
+      socket.off('get-messages');
+      socket.off('receive-message');
+      socket.off('connect');
+    }
+
   },[])
   return (
     <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5 flex flex-col-reverse'>

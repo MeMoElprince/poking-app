@@ -10,7 +10,6 @@ import { MdDelete } from "react-icons/md";
 import { DeleteFriend } from '../../../Store/urls';
 import { UserCtx } from '../../../Store/Context/UserContext';
 import { toast } from 'react-toastify';
-import { io } from 'socket.io-client';
 import { GetAPIURL } from '../../../Store/urls';
 import Chat from './Chat';
 import socket from '../../../Store/socket';
@@ -63,6 +62,10 @@ export default function RightSection({ className = "" }) {
           }
         });
         const res = await response.json();
+        if(res.status === 'success'){
+          console.log(FriendsWith.id);
+          socket.emit('get-friends',FriendsWith.id)
+        }
         toast(res.message, {
           position: "top-right",
           autoClose: 5000,

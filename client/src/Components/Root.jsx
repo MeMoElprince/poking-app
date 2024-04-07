@@ -85,6 +85,7 @@ export default function Root() {
     
     
   }, [data])
+
   if (Loading) {
     return (
       <LoadingPage />
