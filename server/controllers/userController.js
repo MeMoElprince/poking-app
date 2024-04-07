@@ -192,10 +192,11 @@ exports.deleteFriend = catchAsync(async (req, res, next) => {
     await friend.save();
 
     const room = await Room.findOne({users: [user.id, id]});
+    const roomId = room.id;
     // delete the messages
-    const messages = await Message.deleteMany({room: room.id}, {new: true});
+    const messages = await Message.deleteMany({room: roomId}, {new: true});
     // delete the room
-    await Room.findByIdAndDelete(room.id);
+    await Room.findByIdAndDelete(roomId);
     
     
 
