@@ -62,10 +62,11 @@ app.use(globalErrorHandler);
 
 
 io.on('connection', (socket) => {
-    socket.on('friend-accepted', async (userId) =>{
+
+    socket.on('get-friends', async (userId) =>{
         try{
             const friends = await userController.myFriends(userId);
-            io.to(userId).emit('friend-request-accepted', friends);
+            io.to(userId).emit('get-friends', friends);
         } catch (err)
         {
             console.log(err.message);
