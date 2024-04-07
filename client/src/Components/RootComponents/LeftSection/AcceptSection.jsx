@@ -23,6 +23,10 @@ export default function AcceptSection({ className = "" }) {
       setFriends(data);
     })
 
+    return ()=>{
+      socket.off('friend-request-received');
+    }
+
   },[])
 
   useEffect(()=>{    

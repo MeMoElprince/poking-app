@@ -10,7 +10,7 @@ import socket from '../../Store/socket';
 
 export default function AcceptFriendCard({ Img, Title, id }) {
   const [Loading, setLoading] = useState(false);
-  const { Token } = useContext(UserCtx);
+  const { Token,setRequestChanged } = useContext(UserCtx);
   const Fetching = async (url, SocketEndPoint) => {
     try {
       setLoading(true);
@@ -25,6 +25,7 @@ export default function AcceptFriendCard({ Img, Title, id }) {
       setLoading(false);
       if(data.status === 'success')
       {
+        setRequestChanged(prev=>!prev);
         console.log('accepteddddd');
         if(SocketEndPoint)
         {
@@ -47,7 +48,7 @@ export default function AcceptFriendCard({ Img, Title, id }) {
     }
   }
   const handleAcceptFriend = () => {
-    Fetching(AcceptFriend(id), 'friend-accepted');
+    Fetching(AcceptFriend(id), 'get-friends');
   }
   const handleDeleteFriend = () => {
     Fetching(DeclineFriend(id));

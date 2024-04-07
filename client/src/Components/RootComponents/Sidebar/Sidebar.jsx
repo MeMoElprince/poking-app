@@ -12,7 +12,7 @@ import socket from "../../../Store/socket";
 export default memo(function Sidebar({ Turn, setTurn, className = "" }) {
   const [friendReq, setFriendReq] = useState(0);
   const { setBackDropType } = useContext(BackDropCtx);
-  const { Name, Image, Id } = useContext(UserCtx);
+  const { Name, Image, Id, RequestChanged } = useContext(UserCtx);
   const mainStyle = 'w-full flex justify-center items-center mainHover  py-5 relative'
 
   const changeTurn = (num) => {
@@ -23,7 +23,14 @@ export default memo(function Sidebar({ Turn, setTurn, className = "" }) {
     socket.on('number-friend-request', (data) => {
       setFriendReq(data);
     })
+    return ()=>{
+      socket.off('number-friend-request');
+    }
   }, [Id])
+
+  useEffect(()=>{
+    setFriendReq(prev=>Math.max(0,prev-1));
+  },[RequestChanged])
 
   return (
     <aside className={`flex flex-col justify-between items-center select-none ${className}`}>

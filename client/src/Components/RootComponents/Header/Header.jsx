@@ -16,7 +16,7 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             onClick={() => { setRightSectionActive(prev => !prev) }}
-            className="flex justify-center items-center text-gray w-[80px] mainHover h-full">
+            className="flex justify-center items-center text-gray w-[60px] mainHover h-full">
             <FaArrowLeft />
           </motion.div>
         }

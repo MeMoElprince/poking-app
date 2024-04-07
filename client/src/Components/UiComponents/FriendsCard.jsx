@@ -21,10 +21,9 @@ export default function Friends({ Img, id, Title, Message, Time, Counter, room }
           <div className='mytruncate font-bold' title={Title}>{Title}</div>
           <div className='mytruncate text-[#BBBBBB]' title={Message}>{Message}</div>
         </div>
-        <div className="flex flex-col justify-between items-end absolute right-0 rounded-xl w-[80px] z-10  h-full">
-          <div className="text-primary w-[71px] font-bold">{Time}</div>
+        <div className="flex flex-col justify-center items-end absolute right-0 rounded-xl w-[80px] z-10  h-full">
           <div className="rounded-full text-center font-bold bg-primary text-black w-[40px] ">
-            {Counter ? (Counter > 99 ? "99+" : Counter) : ''}
+            {Counter ? 'new' : ''}
           </div>
         </div>
       </div>
