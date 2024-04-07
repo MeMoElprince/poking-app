@@ -20,7 +20,13 @@ const sendErrorProd = (err, req, res) => {
             message: err.message
         });
     } else {
-        console.log('ERROR: ', err.message);
+        console.log('ERROR: ', {
+            status: err.status,
+            statusCode: err.statusCode,
+            error: err,
+            message: err.message,
+            stack: err.stack    
+        });
 
         // Programming or other unknown error: don't leak error details
         res.status(500).json({
