@@ -121,7 +121,7 @@ export default function RightSection({ className = "" }) {
             </div>
           </div>
           <div className='flex-grow bg-background2 mainBg overflow-hidden'>
-            <Chat />
+            <Chat room={FriendsWith.room}/>
           </div>
           <form onSubmit={handleSendMessage} className='flex items-center'>
             <input onChange={handleInputChanges} value={message} className='w-full h-full bg-transparent outline-none border-0 p-4'
