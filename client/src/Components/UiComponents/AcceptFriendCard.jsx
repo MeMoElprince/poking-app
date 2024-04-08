@@ -26,7 +26,6 @@ export default function AcceptFriendCard({ Img, Title, id }) {
       if(data.status === 'success')
       {
         setRequestChanged(prev=>!prev);
-        console.log('accepteddddd');
         if(SocketEndPoint)
         {
           socket.emit(SocketEndPoint, id);

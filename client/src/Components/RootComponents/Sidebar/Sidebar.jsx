@@ -8,7 +8,7 @@ import { BackDropCtx } from "../../../Store/Context/BackDropContext";
 import { UserCtx } from "../../../Store/Context/UserContext";
 import MessageCounter from "../../UiComponents/MessageCounter";
 import socket from "../../../Store/socket";
-
+import bell from '../../../assets/bell.wav';
 export default memo(function Sidebar({ Turn, setTurn, className = "" }) {
   const [friendReq, setFriendReq] = useState(0);
   const { setBackDropType } = useContext(BackDropCtx);
@@ -21,6 +21,7 @@ export default memo(function Sidebar({ Turn, setTurn, className = "" }) {
 
   useEffect(() => {
     socket.on('number-friend-request', (data) => {
+      new Audio(bell).play();
       setFriendReq(data);
     })
     return ()=>{

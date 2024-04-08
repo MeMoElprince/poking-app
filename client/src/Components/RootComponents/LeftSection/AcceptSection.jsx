@@ -17,7 +17,6 @@ export default function AcceptSection({ className = "" }) {
   // const [Loading, setLoading] = useState(true);
 
   useEffect(()=>{
-    // console.log(1)
 
     socket.on('friend-request-received', (data) => {
       setFriends(data);
