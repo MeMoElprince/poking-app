@@ -75,18 +75,20 @@ export default function LeftSection({ className = "" }) {
           <>
             {friends.length === 0 && <div className='text-center text-lg'>Add friend first</div>}
             {friends.length !== 0 &&
-              friends.map((item) => {
-                <>
-                  {item._id === friendId &&
-                    <div key={item._id} onClick={() => setFriendId('')}>
-                      <FriendsCard room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
+               friends.map((item) => {
+                if(item._id === friendId){
+                  return ( 
+                    <div key={item._id} onClick={()=>setFriendId('')}>
+                      <FriendsCard  room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
                     </div>
-                  }
-                  {item._id !== friendId &&
+                  )
+                } else {
+                  return ( 
                     <FriendsCard room={item.room} key={item._id} id={item._id} Img="default.jpg" Title={item.name} Message='' Time="12:00 PM" Counter={0} />
-                  }
-                </>
-              })
+                    )
+                }
+               }
+              )
             }
           </>
         }
