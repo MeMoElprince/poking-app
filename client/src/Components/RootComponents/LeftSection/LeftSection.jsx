@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { LiaSearchSolid } from "react-icons/lia";
 import FriendsCard from "../../UiComponents/FriendsCard";
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import { GetMyFriends } from '../../../Store/urls'
 import useFetch from "../../CustomHooks/useFetch";
 import LoadingSpinner from "../../UiComponents/LoadingSpinner";
@@ -10,12 +10,12 @@ const url = GetMyFriends();
 
 
 // eslint-disable-next-line react/prop-types
-export default function LeftSection({ className = "" }) { 
-  const { data, Loading} = useFetch(url,'GET');
-  const [ friends, setFriends ] = useState([]);
-  const [ friendId, setFriendId ] = useState('');
-  const [ newMessage, setNewMessage ] = useState('');
-  const [ counter, setCounter ] = useState(0);
+export default function LeftSection({ className = "" }) {
+  const { data, Loading } = useFetch(url, 'GET');
+  const [friends, setFriends] = useState([]);
+  const [friendId, setFriendId] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+  const [counter, setCounter] = useState(0);
 
   const inputRef = useRef(null);
   const inputFocus = () => {
@@ -43,7 +43,7 @@ export default function LeftSection({ className = "" }) {
   }, []);
 
   useEffect(() => {
-    if(data){
+    if (data) {
       setFriends(data.friends);
     }
   }, [data]);
@@ -61,11 +61,11 @@ export default function LeftSection({ className = "" }) {
         />
       </div>
       <motion.div
-        initial={{ opacity: 0, y:10 }}
-        animate={{ opacity: 1, y:0 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         className="h-[calc(100%-120px)] space-y-3 overflow-auto sm:pr-5 pr-2">
         {
-          Loading && 
+          Loading &&
           <div className='flex justify-center items-center'>
             <LoadingSpinner />
           </div>
@@ -74,26 +74,24 @@ export default function LeftSection({ className = "" }) {
           !Loading && data &&
           <>
             {friends.length === 0 && <div className='text-center text-lg'>Add friend first</div>}
-            {friends.length !== 0 && 
+            {friends.length !== 0 &&
               friends.map((item) => {
-                if(item._id == friendId){
-                  return ( 
-                    <div key={item._id} onClick={()=>setFriendId('')}>
-                      <FriendsCard  room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
+                <>
+                  {item._id === friendId &&
+                    <div key={item._id} onClick={() => setFriendId('')}>
+                      <FriendsCard room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
                     </div>
-                  )
-                } else {
-                  return ( 
+                  }
+                  {item._id !== friendId &&
                     <FriendsCard room={item.room} key={item._id} id={item._id} Img="default.jpg" Title={item.name} Message='' Time="12:00 PM" Counter={0} />
-                    )
-                }
-               }
-              )
+                  }
+                </>
+              })
             }
           </>
         }
       </motion.div>
-      
+
     </div>
   )
 }
