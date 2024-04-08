@@ -63,7 +63,6 @@ export default function RightSection({ className = "" }) {
         });
         const res = await response.json();
         if(res.status === 'success'){
-          console.log(FriendsWith.id);
           socket.emit('get-friends',FriendsWith.id)
         }
         toast(res.message, {

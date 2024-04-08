@@ -32,7 +32,6 @@ export default function AddSection({ className = "" }) {
       setLoading(false);
       if (res.status === 'success') {
         setData(res.user);
-        console.log({res})
       } else {
         setData('No such user');
       }

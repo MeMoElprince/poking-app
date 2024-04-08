@@ -11,6 +11,7 @@ export default function FriendsContext({children}) {
     const func = (e)=>{
       if(e.key === 'Escape'){
         setRightSectionActive(false);
+        setFriendsWith(false)
       }
     }
     window.addEventListener('keydown',func)

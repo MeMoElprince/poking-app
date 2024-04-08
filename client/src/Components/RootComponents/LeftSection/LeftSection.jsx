@@ -77,7 +77,6 @@ export default function LeftSection({ className = "" }) {
             {friends.length !== 0 && 
               friends.map((item) => {
                 if(item._id == friendId){
-                  console.log({newMessage}, {counter});
                   return ( 
                     <div key={item._id} onClick={()=>setFriendId('')}>
                       <FriendsCard  room={item.room} id={item._id} Img="default.jpg" Title={item.name} Message={newMessage} Time="12:00 PM" Counter={counter} />
