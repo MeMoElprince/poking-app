@@ -57,8 +57,7 @@ export default function Settings() {
         },
         body: JSON.stringify({
           name: NameinSearch,
-          userName: userName,
-          imgName: Image
+          userName: userName
         })
       });
       const res = await response.json();
@@ -99,10 +98,11 @@ export default function Settings() {
       });
       return;
     }
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-    // console.log(URL.createObjectURL(e.target.files[0]));
-    // setImage(URL.createObjectURL(e.target.files[0]));
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => { 
+      // setImage(reader.result);
+    }
     setImage('default.jpg');
   }
   return (
