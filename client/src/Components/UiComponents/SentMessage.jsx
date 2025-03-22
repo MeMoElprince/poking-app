@@ -1,3 +1,4 @@
+import moment from "moment";
 
 function TextWithLinkChecker({ text }) {
   // Regular expression to find URLs in the text
@@ -33,11 +34,14 @@ function TextWithLinkChecker({ text }) {
 }
 
 
-export default function SentMessage({ message, customeStyle }) {
+export default function SentMessage({ time, message, customeStyle }) {
+  const timeInHours = moment(new Date(time)).format("hh:mm A");
+  
   return (
-    <div className={`bg-primary break-all max-w-full w-fit py-2 px-10 rounded-lg relative ${customeStyle}`} style={{ direction: 'rtl', wordWrap: 'break-word' }}>
+    <div className={`bg-primary break-all max-w-full w-fit py-2 px-5 rounded-lg relative ${customeStyle}`} style={{ direction: 'rtl', wordWrap: 'break-word' }}>
       <div className="absolute top-0 right-0 w-0 h-0 border-solid border-transparent border-r-8 border-t-8 bg-primary"></div>
       <TextWithLinkChecker text={message} />
+      <p dir="ltr" className="text-right text-sm pt-2 opacity-80">{timeInHours}</p>
     </div>
   )
 }

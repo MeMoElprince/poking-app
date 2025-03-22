@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import { FriendsCtx } from '../../../Store/Context/FriendsContext.jsx';
 import { UserCtx } from '../../../Store/Context/UserContext.jsx';
 import { GetAPIURL } from '../../../Store/urls.js';
+import moment from "moment";
 import socket from '../../../Store/socket.js';
 const url = GetAPIURL();
 // const messages = [
@@ -59,19 +60,36 @@ export default memo(function Chat({room}) {
   useEffect(() => {
     setMessages([]);
   }, [room]);
+  // messages ? moment(new Date(messages[0]?.createdAt)).format("DD/MM/YYYY") : 
+  let firstDate = messages ? moment(new Date(messages[0]?.createdAt)).format("DD/MM/YYYY") :'';
   return (
     <div ref={chatRef} className='px-4 overflow-auto space-y-5 h-full py-5 flex flex-col-reverse'>
       { !loading && messages && [...messages].map((e,idx)=>{
+        const dateInDays = moment(new Date(e.createdAt)).format("DD/MM/YYYY");
+        const oldFirstDate = firstDate;
+        const showDate = firstDate !== dateInDays
+        firstDate = dateInDays
+        
         return(
           e.sender === Id 
           ? 
-          <div key={e._id} style={{direction:'rtl'}}>
-            <SentMessage message={e.message} customeStyle={idx===0?"mt-5":'mt-0'} /> 
-          </div>
+          <>
+            {showDate && (
+              <div className='mx-auto bg-black/40 py-1 px-3'>{oldFirstDate}</div>
+            )}
+            <div key={e._id} style={{direction:'rtl'}}>
+              <SentMessage message={e.message} time={e.createdAt} customeStyle={idx===0?"mt-5":'mt-0'} /> 
+            </div>
+          </>
           : 
-          <div key={e._id} style={{direction:'ltr'}}>
-            <ReceivedMessage message={e.message} customeStyle={idx===0?"mt-5":'mt-0'} />
-          </div>
+          <>
+            {showDate && (
+              <div className='mx-auto bg-black/40 py-1 px-3'>{oldFirstDate}</div>
+            )}
+            <div key={e._id} style={{direction:'ltr'}}>
+              <ReceivedMessage message={e.message} time={e.createdAt} customeStyle={idx===0?"mt-5":'mt-0'} />
+            </div>
+          </>
         )
       })}
       { loading && <div className='text-center text-gray'>Loading...</div>}

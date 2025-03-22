@@ -13,9 +13,12 @@
     "@vercel/analytics": "^1.2.2",
     "framer-motion": "^11.0.24",
     "js-cookie": "^3.0.5",
+    "mathjs": "^12.4.2",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-router-dom": "^6.23.0",
     "react-toastify": "^10.0.5",
     "socket.io-client": "^4.7.5"
   },
