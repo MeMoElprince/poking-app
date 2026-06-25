@@ -43,6 +43,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
     } catch(err) {
         user.secretToken = undefined;
         user.secretTokenExpires = undefined;
+        await user.save({ validateBeforeSave: false });
         return next(new AppError('Error while sending email please try again later', 500));
     }
 });

@@ -29,16 +29,20 @@ export default function Login() {
       return;
     }
     setLoading(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
     try {
       const response = await fetch(url,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           email: Email
          }),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
       const data = await response.json();
       setLoading(false);
       if(data.status === 'success'){
@@ -56,7 +60,24 @@ export default function Login() {
         });
       }
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Error:', error);
+      setLoading(false);
+      toast(
+        error.name === 'AbortError'
+          ? 'Request timed out, please try again'
+          : 'Network error, please try again',
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        }
+      );
     }
   }
   const handleOnChange = (e) => {

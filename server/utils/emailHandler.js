@@ -6,7 +6,7 @@ module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
         this.url = url;
-        this.from = 'PokingApp <email>';
+        this.from = `PokingApp <${process.env.EMAIL_USERNAME_PROD}>`;
     }
 
     newTransport() {
@@ -17,7 +17,10 @@ module.exports = class Email {
                 auth: {
                     user: process.env.EMAIL_USERNAME_PROD,
                     pass: process.env.EMAIL_PASSWORD_PROD
-                }
+                },
+                connectionTimeout: 10000,
+                greetingTimeout: 10000,
+                socketTimeout: 15000
             });
         }
         return nodemailer.createTransport({
@@ -26,7 +29,10 @@ module.exports = class Email {
             auth: {
                 user: process.env.EMAIL_USERNAME,
                 pass: process.env.EMAIL_PASSWORD
-            }
+            },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 15000
         });
     }
 
