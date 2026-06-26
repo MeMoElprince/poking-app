@@ -56,14 +56,31 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     });
 });
 
+// shared builder: friend profile + their room's last-message preview, newest chat first
+const buildFriends = async (userId) => {
+    const me = await User.findById(userId)
+        .populate('friends.friend')
+        .populate('friends.room')
+        .lean();
+    if(!me) return [];
+    return me.friends
+        .filter(f => f.friend && f.room)
+        .map(f => ({
+            ...f.friend,
+            room: f.room._id,
+            lastMessage: f.room.lastMessage || '',
+            lastMessageAt: f.room.lastMessageAt || null,
+            lastSeen: f.friend.lastSeen || null
+        }))
+        .sort((a, b) => {
+            const ta = a.lastMessageAt ? new Date(a.lastMessageAt).getTime() : 0;
+            const tb = b.lastMessageAt ? new Date(b.lastMessageAt).getTime() : 0;
+            return tb - ta;
+        });
+};
+
 exports.getMyFriends = catchAsync(async (req, res, next) => {
-    const { user } = req;
-    const me = await User.findById(user.id).populate('friends.friend');
-    const friends = me.friends.map(friend => {
-        const test = {...friend.friend._doc, room: friend.room};
-        return test;
-    });
-    // console.log({friends});
+    const friends = await buildFriends(req.user.id);
     res.status(200).json({
         status: 'success',
         count: friends.length,
@@ -191,12 +208,12 @@ exports.deleteFriend = catchAsync(async (req, res, next) => {
     friend.friends.splice(index, 1);
     await friend.save();
 
-    const room = await Room.findOne({users: [user.id, id]});
-    const roomId = room.id;
-    // delete the messages
-    const messages = await Message.deleteMany({room: roomId}, {new: true});
-    // delete the room
-    await Room.findByIdAndDelete(roomId);
+    const room = await Room.findOne({users: {$all: [user.id, id]}});
+    if(room) {
+        // delete the messages then the room
+        await Message.deleteMany({room: room.id});
+        await Room.findByIdAndDelete(room.id);
+    }
     
     
 
@@ -221,10 +238,5 @@ exports.friendRequestsReceived = async(id) => {
 
 
 exports.myFriends = async (id) => {
-    const me = await User.findById(id).populate('friends.friend');
-    const friends = me.friends.map(friend => {
-        const test = {...friend.friend._doc, room: friend.room};
-        return test;
-    });
-    return friends;
+    return buildFriends(id);
 }

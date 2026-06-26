@@ -12,7 +12,7 @@ import useFetch from './CustomHooks/useFetch';
 import { UserCtx } from '../Store/Context/UserContext';
 import { GetMyData } from '../Store/urls';
 import LoadingPage from './Pages/LoadingPage'
-import socket from '../Store/socket';
+import { connectSocket } from '../Store/socket';
 
 const url = GetMyData();
 
@@ -48,8 +48,13 @@ const handleTurn = (Turn, RightSectionActive) => {
 export default function Root() {
   const { RightSectionActive, setRightSectionActive } = useContext(FriendsCtx);
   const [ Turn, setTurn ] = useState(1);
-  const { setName, setImage, setUserName, setId, Id } = useContext(UserCtx);
+  const { setName, setImage, setUserName, setId, setLogedIn, Token } = useContext(UserCtx);
   const { data, Loading } = useFetch(url, 'GET');
+
+  // open the shared socket once we have an auth token
+  useEffect(() => {
+    connectSocket(Token);
+  }, [Token]);
   // mdScreen state here just to make sure the component re-renders when the window width changes
   useEffect(() => {
     const handleResize = () => {
@@ -80,11 +85,15 @@ export default function Root() {
       setImage(data?.user?.imgName);
       setUserName(data?.user?.userName);
       setId(data?.user?._id);
-      socket.emit('connect-user', data?.user?._id);
     }
-    
-    
   }, [data])
+
+  // if /me couldn't be validated (no/expired token or API unreachable), go to Login
+  useEffect(() => {
+    if (!Loading && (!data || data.status !== 'success')) {
+      setLogedIn(false);
+    }
+  }, [Loading, data])
 
   if (Loading) {
     return (

@@ -2,44 +2,64 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const compression = require('compression');
+const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
 const socket = require('socket.io');
 
-const catchAsync = require('./utils/catchAsync');
 const userRouter = require('./routes/userRouter');
 const globalErrorHandler = require('./controllers/globalErrorHandler');
 const messageController = require('./controllers/messageController');
 const userController = require('./controllers/userController');
+const jwtFactory = require('./utils/tokenFactory');
 
 const Room = require('./models/roomModel');
+const User = require('./models/userModel');
 const app = express();
+
+// Behind Render's proxy: trust X-Forwarded-* so req.ip (rate limiting) and
+// req.protocol are correct.
+app.set('trust proxy', 1);
+
+// Allow locking CORS down to the deployed client via env; defaults to open.
+const CLIENT_ORIGIN = process.env.CLIENT_URL || '*';
 
 const server = http.createServer(app);
 const io = socket(server, {
-    cors: {
-        origin: '*',
-    }
+    cors: { origin: CLIENT_ORIGIN }
 });
 
-app.use(cors());
+// --- global middleware (order matters) ---
 
+// gzip all responses
+app.use(compression());
+
+// secure HTTP headers (allow the separate client origin to read resources)
+app.use(helmet({ crossOriginResourcePolicy: false }));
+
+// CORS for the REST API
+app.use(cors({ origin: CLIENT_ORIGIN }));
+
+// body parser with a size cap to blunt large-payload abuse
+app.use(express.json({ limit: '10kb' }));
+
+// strip $ / . operators from inputs to prevent NoSQL query injection
+app.use(mongoSanitize());
+
+// request logging in development only
 if(process.env.NODE_ENV === 'development')
     app.use(morgan('dev'));
 
-app.use(helmet());
-
+// rate limit the API per client IP (now keyed correctly via trust proxy)
 const limiter = rateLimit({
-    max: 100,
-    windowMs: 1 * 60 * 1000,
-    message: 'Too many requests from this IP, please try again in an hour',
-    keyGenerator: (req, res) => {
-        return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
-    }    
+    max: 200,
+    windowMs: 60 * 1000,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { status: 'fail', message: 'Too many requests, please try again in a minute' }
 });
-
-app.use(limiter);
-app.use(express.json());
+app.use('/api', limiter);
 
 
 app.use('/api/v1/users', userRouter);
@@ -61,72 +81,137 @@ app.use(globalErrorHandler);
 
 
 
+// ---- socket auth: verify JWT once per connection, trust socket.data.userId after ----
+io.use((socket, next) => {
+    try {
+        const token = socket.handshake.auth && socket.handshake.auth.token;
+        if(!token) return next(new Error('unauthorized'));
+        const decoded = jwtFactory.verifyToken(token);
+        socket.data.userId = decoded.id;
+        next();
+    } catch (err) {
+        next(new Error('unauthorized'));
+    }
+});
+
+// ---- in-memory presence: userId -> Set<socketId> (single instance only) ----
+const online = new Map();
+
+const addOnline = (userId, socketId) => {
+    if(!online.has(userId)) online.set(userId, new Set());
+    online.get(userId).add(socketId);
+    return online.get(userId).size === 1; // true if this is the user's first connection
+};
+
+const removeOnline = (userId, socketId) => {
+    const set = online.get(userId);
+    if(!set) return false;
+    set.delete(socketId);
+    if(set.size === 0) { online.delete(userId); return true; } // true if user went fully offline
+    return false;
+};
+
 io.on('connection', (socket) => {
+    const userId = socket.data.userId;
 
-    socket.on('get-friends', async (userId) =>{
-        try{
-            const friends = await userController.myFriends(userId);
-            io.to(userId).emit('get-friends', friends);
-        } catch (err)
-        {
-            console.log(err.message);
+    // personal room for targeted notifications + presence
+    socket.join(userId);
+    const firstConnection = addOnline(userId, socket.id);
+    socket.emit('presence:init', [...online.keys()]);
+    if(firstConnection)
+        socket.broadcast.emit('presence', { userId, online: true });
+
+    socket.on('disconnect', async () => {
+        const wentOffline = removeOnline(userId, socket.id);
+        if(wentOffline) {
+            const lastSeen = new Date();
+            try { await User.findByIdAndUpdate(userId, { lastSeen }); }
+            catch (err) { console.log(err.message); }
+            socket.broadcast.emit('presence', { userId, online: false, lastSeen });
         }
     });
 
-    socket.on('friend-request-sent', async (userId) => {
-        // get friend requests received from this user Id
-        try{
-            const friendRequestsReceived = await userController.friendRequestsReceived(userId);
-            io.to(userId).emit('friend-request-received', friendRequestsReceived);
-        } catch(err) {
-            console.log(err.message);
-        } 
+    // kept for client compatibility; presence/join is now automatic on connect
+    socket.on('connect-user', () => {});
+
+    socket.on('get-friends', async (targetId) => {
+        try {
+            const friends = await userController.myFriends(targetId);
+            io.to(targetId).emit('get-friends', friends);
+        } catch (err) { console.log(err.message); }
     });
 
-
-    socket.on('connect-user', async (userId) => {
-        try{
-            socket.join(userId);
-        } catch (err) {
-            console.log(err.message);
-        }
+    socket.on('friend-request-sent', async (targetId) => {
+        try {
+            const received = await userController.friendRequestsReceived(targetId);
+            io.to(targetId).emit('friend-request-received', received);
+        } catch (err) { console.log(err.message); }
     });
 
-    socket.on('number-friend-request', async (userId) => {
-        try{
-            const numberOfFriendRequests = await userController.getNumberOfFriendRequests(userId);
-            io.to(userId).emit('number-friend-request', numberOfFriendRequests);
-        } catch (err) {
-            console.log(err.message);
-        }
+    socket.on('number-friend-request', async (targetId) => {
+        try {
+            const count = await userController.getNumberOfFriendRequests(targetId);
+            io.to(targetId).emit('number-friend-request', count);
+        } catch (err) { console.log(err.message); }
     });
 
     socket.on('join-room', async (room) => {
-        socket.join(room);
-        const messages = await messageController.getMessages(room);
-        socket.emit('get-messages', messages);
+        try {
+            if(socket.data.room && socket.data.room !== room)
+                socket.leave(socket.data.room);
+            socket.join(room);
+            socket.data.room = room;
+            const messages = await messageController.getMessages(room);
+            socket.emit('get-messages', messages);
+        } catch (err) { console.log(err.message); }
     });
 
+    // infinite scroll up: fetch older messages before a given timestamp
+    socket.on('load-older', async ({ room, before }) => {
+        try {
+            const messages = await messageController.getMessages(room, { before });
+            socket.emit('older-messages', { room, messages });
+        } catch (err) { console.log(err.message); }
+    });
 
-    socket.on('send-message', async (data) => {
-        try{    
-            const newMessage = await messageController.createMessage(data);
+    socket.on('send-message', async (data, ack) => {
+        try {
+            const payload = { room: data.room, message: data.message, sender: userId };
+            const newMessage = await messageController.createMessage(payload);
+            // broadcast to the room, excluding the sender (sender uses the ack copy)
             socket.to(data.room).emit('receive-message', newMessage);
-            // you have reciver id now 
-            const room = await Room.findById(data.room);
-            const toId = room.users.find(user => user != data.sender);
-            io.to(toId.toString()).emit('receive-message', newMessage, data.sender.toString());
+            // notify the recipient's personal room for list preview / counter / sound
+            const room = await Room.findById(data.room).lean();
+            const toId = room && room.users.find(u => u.toString() !== userId);
+            if(toId)
+                io.to(toId.toString()).emit('message-notification', {
+                    room: data.room,
+                    message: newMessage.message,
+                    senderId: userId
+                });
+            if(typeof ack === 'function') ack(newMessage);
         } catch (err) {
             console.log(err.message);
+            if(typeof ack === 'function') ack({ error: 'send-failed' });
         }
     });
 
+    socket.on('mark-read', async ({ room }) => {
+        try {
+            const changed = await messageController.markRoomRead(room, userId);
+            if(changed > 0)
+                socket.to(room).emit('messages-read', { room });
+        } catch (err) { console.log(err.message); }
+    });
 
+    socket.on('typing', ({ room }) => {
+        socket.to(room).emit('typing', { room, userId });
+    });
 
-
-
-
-})
+    socket.on('stop-typing', ({ room }) => {
+        socket.to(room).emit('stop-typing', { room, userId });
+    });
+});
 
 
 

@@ -15,14 +15,18 @@ const messageSchema = new mongoose.Schema({
         ref: 'Room',
         required: [true, 'Message must have a room']
     },
+    isRead: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Number,
         default: () => Math.floor(Date.now())
     }
 });
 
-// create index for createdAt field in messageSchema from newest to oldest
-messageSchema.index({createdAt: -1});
+// compound index for the hot query: messages of a room, newest first
+messageSchema.index({room: 1, createdAt: -1});
 
 const Message = mongoose.model('Message', messageSchema);
 module.exports = Message;

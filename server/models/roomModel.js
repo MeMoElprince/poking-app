@@ -17,6 +17,12 @@ const roomSchema = new mongoose.Schema({
         enum: ['chat', 'group'],
         default: 'chat'
     },
+    lastMessage: {
+        type: String
+    },
+    lastMessageAt: {
+        type: Date
+    },
     createdAt: {
         type: Date,
         default: Date.now()

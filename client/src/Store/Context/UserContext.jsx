@@ -1,11 +1,12 @@
 import { createContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie';
+import { disconnectSocket } from '../socket';
 
 export const UserCtx = createContext();
 
 // eslint-disable-next-line react/prop-types
 export default function UserContext({ children }) {
-  const [LogedIn, setLogedIn] = useState(true);
+  const [LogedIn, setLogedIn] = useState(!!Cookies.get('token'));
   const [Email, setEmail] = useState('');
   const [Name, setName] = useState('');
   const [Id, setId] = useState('');
@@ -15,6 +16,7 @@ export default function UserContext({ children }) {
   const [Token, setToken] = useState(Cookies.get('token'));
   useEffect(()=>{
     if(!LogedIn){
+      disconnectSocket();
       Cookies.remove('token');
       setToken('');
       setEmail('');

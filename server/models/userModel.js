@@ -53,6 +53,9 @@ const userSchema = new mongoose.Schema({
         enum: ['user'],
         default: 'user'
     },
+    lastSeen: {
+        type: Date
+    },
     // the below fields are for the user's profile page and are not required for the user to be created
     // it consist of an array of friends and an array of friend requests
     // each document of this collection will have a reference to the user's friends and friend requests
