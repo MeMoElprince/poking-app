@@ -1,39 +1,15 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
         this.url = url;
-        this.from = `PokingApp <${process.env.EMAIL_USERNAME_PROD}>`;
-    }
-
-    newTransport() {
-        if(process.env.NODE_ENV === 'production') {
-            // Gmail
-            return nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: process.env.EMAIL_USERNAME_PROD,
-                    pass: process.env.EMAIL_PASSWORD_PROD
-                },
-                connectionTimeout: 10000,
-                greetingTimeout: 10000,
-                socketTimeout: 15000
-            });
-        }
-        return nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD
-            },
-            connectionTimeout: 10000,
-            greetingTimeout: 10000,
-            socketTimeout: 15000
-        });
+        // Resend requires `from` to be onboarding@resend.dev (test) or a verified domain.
+        this.from = process.env.RESEND_FROM || 'PokingApp <onboarding@resend.dev>';
     }
 
     async send(template, subject) {
@@ -43,17 +19,18 @@ module.exports = class Email {
             subject
         });
 
-        // 2) Define email options
-        const mailOptions = {
+        // 2) Send via Resend HTTP API (works on hosts that block SMTP)
+        const { error } = await resend.emails.send({
             from: this.from,
             to: this.to,
             subject,
             html,
             text: htmlToText.convert(html)
-        };
+        });
 
-        // 3) Create a transport and send email
-        await this.newTransport().sendMail(mailOptions);
+        // Resend returns the error instead of throwing — surface it so callers catch it
+        if (error)
+            throw new Error(error.message || 'Failed to send email');
     }
 
     async sendVerification() {
