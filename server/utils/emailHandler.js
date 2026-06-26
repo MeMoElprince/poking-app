@@ -8,7 +8,7 @@ module.exports = class Email {
         this.to = user.email;
         this.name = user.name || 'there';
         this.url = url;
-        this.appUrl = process.env.CLIENT_URL || 'https://poking-app.netlify.app';
+        this.appUrl = process.env.CLIENT_URL || 'https://pokingapp.vercel.app';
     }
 
     async send(template, subject, data = {}) {

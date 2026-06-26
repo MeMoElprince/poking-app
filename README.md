@@ -4,7 +4,7 @@
 
 **A real-time, passwordless chat platform — add friends by email and start talking instantly.**
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-9837F9?style=for-the-badge)](https://poking-app.netlify.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-9837F9?style=for-the-badge)](https://pokingapp.vercel.app/)
 &nbsp;
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://expressjs.com/)
@@ -38,7 +38,7 @@ Poking App is a full-stack chat application. There are **no passwords** — you 
 your email and a one-time code (OTP). Once in, you add friends by their email address and
 chat in real time, with typing indicators, online presence, and read receipts.
 
-> 🌐 **Live:** client on [poking-app.netlify.app](https://poking-app.netlify.app/) · API on Render
+> 🌐 **Live:** client on [pokingapp.vercel.app](https://pokingapp.vercel.app/) · API on Render
 
 ---
 
@@ -70,7 +70,7 @@ chat in real time, with typing indicators, online presence, and read receipts.
 | **Backend** | Node.js, Express, Socket.IO, Mongoose (MongoDB), JSON Web Tokens |
 | **Email (OTP)** | [Brevo](https://www.brevo.com/) HTTP API (no SMTP — works on hosts that block SMTP) |
 | **Security/Perf** | Helmet, CORS, express-rate-limit, express-mongo-sanitize, compression (gzip) |
-| **Hosting** | Netlify (client), Render (API), MongoDB Atlas (database) |
+| **Hosting** | Vercel (client), Render (API), MongoDB Atlas (database) |
 
 ---
 
@@ -80,7 +80,7 @@ chat in real time, with typing indicators, online presence, and read receipts.
 ┌────────────┐    HTTPS / WSS    ┌──────────────────────────┐      ┌──────────────┐
 │   Client   │ ◀───────────────▶ │       Express API        │ ◀──▶ │ MongoDB Atlas│
 │ (React/Vite│   REST + Socket   │  + Socket.IO (one server)│      └──────────────┘
-│  Netlify)  │                   │         Render           │
+│  Vercel)   │                   │         Render           │
 └────────────┘                   └────────────┬─────────────┘
                                                │ HTTPS
                                                ▼
