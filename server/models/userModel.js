@@ -56,6 +56,10 @@ const userSchema = new mongoose.Schema({
     lastSeen: {
         type: Date
     },
+    lastNotifiedAt: {
+        type: Date,
+        select: false
+    },
     // the below fields are for the user's profile page and are not required for the user to be created
     // it consist of an array of friends and an array of friend requests
     // each document of this collection will have a reference to the user's friends and friend requests

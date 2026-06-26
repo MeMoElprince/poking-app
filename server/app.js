@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/globalErrorHandler');
 const messageController = require('./controllers/messageController');
 const userController = require('./controllers/userController');
 const jwtFactory = require('./utils/tokenFactory');
+const Email = require('./utils/emailHandler');
 
 const Room = require('./models/roomModel');
 const User = require('./models/userModel');
@@ -111,6 +112,30 @@ const removeOnline = (userId, socketId) => {
     return false;
 };
 
+// ---- offline email notifications (throttled, reuses User.lastNotifiedAt) ----
+const NOTIFY_WINDOW = 3 * 60 * 60 * 1000; // 3 hours
+
+const notifyOfflineRecipient = async (recipientId, senderId) => {
+    // Atomically "claim" a notification slot: only proceed if the recipient hasn't
+    // been notified within the window. This both throttles and avoids race-double-sends.
+    const cutoff = new Date(Date.now() - NOTIFY_WINDOW);
+    const recipient = await User.findOneAndUpdate(
+        {
+            _id: recipientId,
+            $or: [{ lastNotifiedAt: { $exists: false } }, { lastNotifiedAt: { $lt: cutoff } }]
+        },
+        { lastNotifiedAt: new Date() },
+        { new: false }
+    ).select('email name');
+
+    if(!recipient || !recipient.email) return; // not found, or within the 3h window
+
+    const sender = await User.findById(senderId).select('name');
+    const senderName = (sender && sender.name) || 'Someone';
+    await new Email({ email: recipient.email, name: recipient.name }, null)
+        .sendMessageNotification(senderName);
+};
+
 io.on('connection', (socket) => {
     const userId = socket.data.userId;
 
@@ -183,12 +208,17 @@ io.on('connection', (socket) => {
             // notify the recipient's personal room for list preview / counter / sound
             const room = await Room.findById(data.room).lean();
             const toId = room && room.users.find(u => u.toString() !== userId);
-            if(toId)
+            if(toId) {
                 io.to(toId.toString()).emit('message-notification', {
                     room: data.room,
                     message: newMessage.message,
                     senderId: userId
                 });
+                // email the recipient if they're offline — fire-and-forget, throttled to 3h
+                if(!online.has(toId.toString()))
+                    notifyOfflineRecipient(toId.toString(), userId)
+                        .catch(err => console.log('notify error:', err.message));
+            }
             if(typeof ack === 'function') ack(newMessage);
         } catch (err) {
             console.log(err.message);

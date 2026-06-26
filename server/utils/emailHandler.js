@@ -6,14 +6,19 @@ const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
 module.exports = class Email {
     constructor(user, url) {
         this.to = user.email;
+        this.name = user.name || 'there';
         this.url = url;
+        this.appUrl = process.env.CLIENT_URL || 'https://poking-app.netlify.app';
     }
 
-    async send(template, subject) {
+    async send(template, subject, data = {}) {
         // 1) Render HTML based on a pug template
         const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
             url: this.url,
-            subject
+            name: this.name,
+            appUrl: this.appUrl,
+            subject,
+            ...data
         });
 
         // 2) Send via Brevo HTTP API (works on hosts that block SMTP, no domain needed)
@@ -46,5 +51,13 @@ module.exports = class Email {
 
     async sendVerification() {
         await this.send('verification', 'Verify your email address');
+    }
+
+    async sendMessageNotification(senderName) {
+        await this.send(
+            'messageNotification',
+            `${senderName} sent you a message on Poking App`,
+            { senderName }
+        );
     }
 }
